@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { StyleSheet, View, Text, StatusBar } from 'react-native'
 import React from 'react'
 import { Stack } from 'expo-router'
 
@@ -7,7 +7,7 @@ const RootLayout = () => {
    
     <Stack>
         <Stack.Screen name = "index" options ={{ headerShown : false }} />
-        <Stack.Screen name = "(tabs)" options = {{headerShown : false }} />
+        <Stack.Screen name = "(tabs)" options = {{ headerShown : false }} />
     </Stack>
 
   )
