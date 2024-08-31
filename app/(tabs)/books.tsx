@@ -1,5 +1,6 @@
 import { StyleSheet, View, Text, ActivityIndicator, FlatList, SafeAreaView } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import { getEnvironment } from '../../constants/environment';
 
 type Book = {
   code: string;
@@ -14,8 +15,10 @@ const Books = () => {
   const [data, setData] = useState<Book[]>([]);
 
   const getBooks = async () => {
+    const { baseUrl } = getEnvironment();
+
     try {
-      const response = await fetch('https://0421-115-96-161-212.ngrok-free.app/v1/breeze/book/get-books', {
+      const response = await fetch(`${baseUrl}/v1/breeze/book/get-books`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
