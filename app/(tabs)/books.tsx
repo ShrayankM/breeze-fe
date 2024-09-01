@@ -1,6 +1,7 @@
-import { StyleSheet, View, Text, ActivityIndicator, FlatList, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Text, ActivityIndicator, FlatList, SafeAreaView, StatusBar, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { getEnvironment } from '../../constants/environment';
+import BookCard from '@/components/bookCard';
 
 type Book = {
   code: string;
@@ -47,49 +48,24 @@ const Books = () => {
   }, []);
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <View style={styles.container}>
-        {isLoading ? (
-          <ActivityIndicator size="large" color="#0000ff" />
-        ) : (
-          <FlatList
-            data={data}
-            keyExtractor={({ code }) => code}
-            renderItem={({ item }) => (
-              <View style={styles.itemContainer}>
-                <Text style={styles.itemText}>
-                  {item.bookName}, {item.authorName}, {item.genre}, {item.isbn}
-                </Text>
-              </View>
-            )}
-            contentContainerStyle={styles.listContentContainer}
-          />
-        )}
-      </View>
+    <SafeAreaView className='bg-primary h-full'>
+          <FlatList className='mt-20'
+              data={data}
+              numColumns={1}
+              keyExtractor={({ code }) => code}
+              renderItem={({ item }) => 
+                  <BookCard
+                      name={item.bookName}
+                      authorName={item.authorName}
+                      genre={item.genre}
+                      isbn={item.isbn}
+                  />
+              }
+              contentContainerStyle={{ paddingLeft: 10, paddingBottom: 10 }}
+              showsVerticalScrollIndicator={false}
+            />
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  itemContainer: {
-    marginBottom: 10,
-  },
-  itemText: {
-    fontSize: 16,
-  },
-  listContentContainer: {
-    flexGrow: 1,
-    justifyContent: 'center',
-  },
-});
 
 export default Books;
