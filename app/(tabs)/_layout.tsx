@@ -17,9 +17,9 @@ const TabIcon: React.FC<TabIconProps> = ({icon, color, name, focused}) => {
               source={icon}
               resizeMode='contain'
               tintColor={color}
-              className='w-7 h-7 mb-2'
+              className='w-5 h-5 mb-1'
           />
-          <Text className ='text-xs' style={{ color : color }}>{name}</Text>
+          <Text className ='text-[12px]' style={{ color : color }}>{name}</Text>
       </View>
   )
 }
@@ -37,7 +37,7 @@ const TabsLayout = () => {
                   backgroundColor: '#0d0d0d',
                   borderTopWidth: 1,
                   borderTopColor: '#0d0d0d',
-                  height: 84
+                  height: 64
                 }
           }}
       >
@@ -100,6 +100,38 @@ const TabsLayout = () => {
                       icon={icons.wishlist}
                       color={color}
                       name="Wishlist"
+                      focused={focused}
+                  />
+                )
+            }}
+        />
+
+        <Tabs.Screen 
+            name = "add"
+            options={{
+                title: "Add",
+                headerShown: false,
+                tabBarIcon: ({ color, focused }) => (
+                  <TabIcon 
+                      icon={icons.add}
+                      color={color}
+                      name="Add"
+                      focused={focused}
+                  />
+                )
+            }}
+        />
+
+        <Tabs.Screen 
+            name = "request"
+            options={{
+                title: "Request",
+                headerShown: false,
+                tabBarIcon: ({ color, focused }) => (
+                  <TabIcon 
+                      icon={icons.request}
+                      color={color}
+                      name="Request"
                       focused={focused}
                   />
                 )
