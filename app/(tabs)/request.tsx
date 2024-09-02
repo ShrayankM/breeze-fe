@@ -3,35 +3,38 @@ import React, { useEffect, useState } from 'react';
 import { getEnvironment } from '../../constants/environment';
 import BookCard from '@/components/BookCard';
 
-type Book = {
+type BookRequest = {
   code: string;
   bookName: string;
-  isbn: string;
   authorName: string;
-  genre: string;
+  isbn: string;
+  noOfPages: string;
+  yearPublished: string;
+  bookGenre: string;
+  description: string;
 };
 
-const Books = () => {
+const Request = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState<Book[]>([]);
+  const [data, setData] = useState<BookRequest[]>([]);
 
   const getBooks = async () => {
     const { baseUrl } = getEnvironment();
 
     try {
-      const response = await fetch(`${baseUrl}/v1/breeze/book/get-books`, {
+      const response = await fetch(`${baseUrl}/v1/breeze/approval/fetch-request-list`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userCode: 'USR12345',
+          approvalStatus : "SUBMITTED"
         }),
       });
 
       const jsonData = await response.json();
-      const books = jsonData.data?.bookDetailsList || [];
+      const books = jsonData.data?.bookApprovalDataList || [];
       setData(books);
       
     } catch (error) {
@@ -55,7 +58,7 @@ const Books = () => {
                   <BookCard
                       name={item.bookName}
                       authorName={item.authorName}
-                      genre={item.genre}
+                      genre={item.bookGenre}
                       isbn={item.isbn}
                   />
               }
@@ -66,4 +69,4 @@ const Books = () => {
   );
 };
 
-export default Books;
+export default Request;
