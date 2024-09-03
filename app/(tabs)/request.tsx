@@ -2,6 +2,7 @@ import { StyleSheet, View, Text, ActivityIndicator, FlatList, SafeAreaView, Stat
 import React, { useEffect, useState } from 'react';
 import { getEnvironment } from '../../constants/environment';
 import BookCard from '@/components/BookCard';
+import { router } from 'expo-router';
 
 type BookRequest = {
   code: string;
@@ -48,6 +49,10 @@ const Request = () => {
     getBooks();
   }, []);
 
+  const handlePress = (bookRequest: BookRequest) => {
+    router.push({ pathname: '/(pages)/requestDetails', params: bookRequest})
+  };
+
   return (
     <SafeAreaView className='bg-primary h-full'>
           <FlatList className='mt-20'
@@ -60,6 +65,7 @@ const Request = () => {
                       authorName={item.authorName}
                       genre={item.bookGenre}
                       isbn={item.isbn}
+                      onPress={() => handlePress(item)}
                   />
               }
               contentContainerStyle={{ paddingLeft: 10, paddingBottom: 10 }}

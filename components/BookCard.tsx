@@ -7,12 +7,13 @@ interface BookCardProps {
     authorName: string;
     genre: string;
     isbn: string;
+    onPress: () => void;
 }
 
 
-const BookCard: React.FC<BookCardProps> = ({ name, authorName, genre, isbn }) => {
+const BookCard: React.FC<BookCardProps> = ({ name, authorName, genre, isbn, onPress }) => {
     return (
-        <TouchableOpacity className='flex-row h-26 bg-white rounded-lg overflow-hidden mb-2 justify-center items-center'>
+        <TouchableOpacity onPress= {onPress} className='flex-row h-26 bg-white rounded-lg overflow-hidden mb-2 justify-center items-center'>
         <View className='w-16 h-16 m-2'>
                 <Image 
                     source={images.bookImage}
