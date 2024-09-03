@@ -116,6 +116,7 @@ const [isSubmitting, setIsSubmitting] = useState(false)
 
             <CustomButton 
                 title="Send Request" 
+                color='#FF9C01'
                 handlePress={submitForm}  
                 containerStyles='mt-7' 
                 isLoading={isSubmitting}   
