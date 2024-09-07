@@ -2,7 +2,7 @@ import { View, Text, SafeAreaView, ScrollView, Alert } from 'react-native'
 import React, { useState } from 'react'
 import FormField from '@/components/FormField'
 import CustomButton from '@/components/CustomButton'
-import { getEnvironment } from '../../constants/environment';
+import { getEnvironment } from '../constants/environment';
 
 const Add = () => {
 

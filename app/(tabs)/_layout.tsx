@@ -105,38 +105,6 @@ const TabsLayout = () => {
                 )
             }}
         />
-
-        <Tabs.Screen 
-            name = "add"
-            options={{
-                title: "Add",
-                headerShown: false,
-                tabBarIcon: ({ color, focused }) => (
-                  <TabIcon 
-                      icon={icons.add}
-                      color={color}
-                      name="Add"
-                      focused={focused}
-                  />
-                )
-            }}
-        />
-
-        <Tabs.Screen 
-            name = "request"
-            options={{
-                title: "Request",
-                headerShown: false,
-                tabBarIcon: ({ color, focused }) => (
-                  <TabIcon 
-                      icon={icons.request}
-                      color={color}
-                      name="Request"
-                      focused={focused}
-                  />
-                )
-            }}
-        />
         
       </Tabs>
     </>
