@@ -6,10 +6,12 @@ import { router } from 'expo-router';
 
 type Book = {
   code: string;
-  bookName: string;
-  isbn: string;
-  authorName: string;
-  genre: string;
+  name: string;
+  isbnSmall: string;
+  isbnLarge: string;
+  author: string;
+  category: string;
+  thumbnail:string;
 };
 
 const Books = () => {
@@ -32,7 +34,9 @@ const Books = () => {
       });
 
       const jsonData = await response.json();
-      const books = jsonData.data?.bookDetailsList || [];
+      const books = jsonData.data?.list || [];
+
+      console.log(`Books = ${books}`);
       setData(books);
       
     } catch (error) {
@@ -58,10 +62,11 @@ const Books = () => {
               keyExtractor={({ code }) => code}
               renderItem={({ item }) => 
                   <BookCard
-                      name={item.bookName}
-                      authorName={item.authorName}
-                      genre={item.genre}
-                      isbn={item.isbn}
+                      name={item.name}
+                      author={item.author}
+                      category={item.category}
+                      isbnSmall={item.isbnSmall}
+                      thumbnail={item.thumbnail}
                       onPress={() => handlePress(item)}
                   />
               }
