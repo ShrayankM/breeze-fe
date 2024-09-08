@@ -1,29 +1,33 @@
-import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native'
+import { View, Text, Image, StyleSheet, ActivityIndicator, SafeAreaView, StatusBar, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useLocalSearchParams } from 'expo-router'
 import CustomButton from '@/components/CustomButton';
 import { getEnvironment } from '../../constants/environment';
+import { MaterialIcons } from '@expo/vector-icons'; 
 
 type Book = {
   code: string;
   name: string;
+  subtitle: string;
   isbnSmall: string;
   isbnLarge: string;
   author: string;
   category: string;
   thumbnail: string;
+  publishedDate: string;
+  description:string;
+  pages: string;
 };
 
 const BookDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<Book | null>(null);
+  const [isExpanded, setIsExpanded] = useState(false); 
   const bookDetails = useLocalSearchParams(); // Assuming bookDetails contains `code`
 
   // Fetch book details using book code
   const getBookUsingCode = async () => {
     const { baseUrl } = getEnvironment();
-
-    console.log(`Code = ${bookDetails.code}`);
 
     try {
       const response = await fetch(`${baseUrl}/v1/breeze/book/${bookDetails.code}/get-book-details`, {
@@ -38,8 +42,6 @@ const BookDetails = () => {
       const book = jsonData.data || {};
 
       setData(book);  // Set fetched book data
-
-      console.log(`thumbnail = ${book.thumbnail}`);
 
     } catch (error) {
       console.error('Error fetching book details:', error);
@@ -70,37 +72,73 @@ const BookDetails = () => {
   }
 
   return (
-    <View className="flex-1 justify-center items-center p-5 bg-gray-200">
-      
-      {/* Image Section */}
-      {data.thumbnail ? (
-        <Image 
-          source={{ uri: data.thumbnail }}
-          resizeMode="contain"
-          className="mb-5 rounded-md w-64 h-64"
-        />
-      ) : (
-        <Text>No Image Available</Text>
-      )}
+    <ScrollView>
+    <SafeAreaView className="flex-1 mt-14">
+      <StatusBar barStyle="light-content" backgroundColor="#161622" />
+      <View className="w-full items-start flex-row">
 
-      {/* Book Details Section */}
-      <View className="w-full mb-5 mt-5">
-        <Text style={styles.label}>Book Code:</Text>
-        <Text style={styles.value}>{bookDetails.code}</Text>
+      <View className="flex-1 items-center justify-center">
+        {data.thumbnail ? (
+          <Image 
+            source={{ uri: data.thumbnail }}
+            resizeMode="contain"
+            className="mt-2 mb-2 w-56 h-48"
+          />
+        ) : (
+          <Text>No Image Available</Text>
+        )}
+        </View>
 
-        <Text style={styles.label}>Book Name:</Text>
-        <Text style={styles.value}>{data.name}</Text>
+        <View className="flex-1 items-center justify-center mt-2 mr-5">
+          <View className='mt-2 mb-5'>
+          <Text className="text-[22px] font-bold">
+              {data.name}
+          </Text>
 
-        <Text style={styles.label}>Author Name:</Text>
-        <Text style={styles.value}>{data.author}</Text>
+            <Text className='text-[15px]'>{data.author}</Text>
 
-        <Text style={styles.label}>ISBN:</Text>
-        <Text style={styles.value}>{data.isbnSmall}</Text>
-
-        <Text style={styles.label}>Category:</Text>
-        <Text style={styles.value}>{data.category}</Text>
+            <Text>Released {data.publishedDate}</Text>
+          </View>
+        </View>
       </View>
-    </View>
+      
+      <View className="w-full justify-center items-center">
+        
+      <View className='w-full'>
+        <Text className='mt-5 mr-5 ml-5'>
+          <Text className='font-bold'>Category:</Text> {data.category}
+        </Text>
+        <Text className='mr-5 ml-5'>
+          <Text className='font-bold'>Pages:</Text> {data.pages}
+        </Text>
+        <Text className='mb-5 mr-5 ml-5'>
+          <Text className='font-bold'>ISBN:</Text> {data.isbnLarge}
+        </Text>
+      </View>
+
+      <View style={styles.container}>
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.descriptionTitle}>Description</Text>
+          <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)} style={styles.toggleButton}>
+            <MaterialIcons
+              name={isExpanded ? 'expand-less' : 'expand-more'}
+              size={20}
+              color="black"
+            />
+          </TouchableOpacity>
+        </View>
+      
+        <Text
+          numberOfLines={isExpanded ? undefined : 5}
+          style={styles.descriptionText}
+        >
+          {data.description}
+        </Text>
+        </View>
+
+      </View>
+      </SafeAreaView>
+    </ScrollView>
   );
 };
 
@@ -123,5 +161,32 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: '#666',
     marginBottom: 10,
+  },
+  descriptionContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  toggleButton: {
+    backgroundColor: '#ddd',
+    padding: 5,
+    borderRadius: 5,
+  },
+  toggleButtonText: {
+    color: '#007BFF',
+  },
+  descriptionText: {
+    margin: 5,
+    fontSize: 16,
+    color: '#333',
+  },
+  container: {
+    flex: 1,
+    padding: 10,
+  },
+  descriptionTitle: {
+    marginLeft: 3,
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
