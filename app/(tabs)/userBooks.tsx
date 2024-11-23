@@ -1,15 +1,87 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, SafeAreaView, FlatList } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { getEnvironment } from '@/constants/environment';
+import BookCard from '@/components/BookCard';
+import { router } from 'expo-router';
+
+type Book = {
+  code: string;
+  name: string;
+  isbnSmall: string;
+  isbnLarge: string;
+  author: string;
+  category: string;
+  thumbnail:string;
+};
 
 const UserBooks = () => {
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState<Book[]>([]);
+
+  const getBooks = async () => {
+    const { baseUrl } = getEnvironment();
+
+    try {
+      const response = await fetch(`${baseUrl}/v1/breeze/book/get-books-user`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userCode : "UER832499997",
+          bookStatus: "ADDED",
+          limit: 2,
+          offset: 0
+        }),
+      });
+
+      const jsonData = await response.json();
+      const books = jsonData.data?.list || [];
+
+      console.log(`Books = ${books}`);
+      setData(books);
+      
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getBooks();
+  }, []);
+
+  const handlePress = (bookDetails: Book) => {
+    router.push({ pathname: '/(pages)/bookDetails', params: bookDetails})
+  };
+
   return (
-    <View className='flex-1 justify-center items-center'>
-      <Text>User Books</Text>
-    </View>
-  )
+    <SafeAreaView className='bg-primary h-full'>
+          <FlatList className='mt-20'
+              data={data}
+              numColumns={1}
+              keyExtractor={({ code }) => code}
+              renderItem={({ item }) => 
+                  <BookCard
+                      name={item.name}
+                      author={item.author}
+                      category={item.category}
+                      isbnSmall={item.isbnSmall}
+                      thumbnail={item.thumbnail}
+                      onPress={() => handlePress(item)}
+                  />
+              }
+              contentContainerStyle={{ paddingLeft: 10, paddingBottom: 10 }}
+              showsVerticalScrollIndicator={false}
+            />
+    </SafeAreaView>
+  );
 }
 
-export default UserBooks
+export default UserBooks;
 
 // when user switches tabs to his personal books (there will be list of all books that user has read and reading)
 // reading will be on top, after that there will be read books
