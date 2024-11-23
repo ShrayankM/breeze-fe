@@ -17,9 +17,14 @@ const TabIcon: React.FC<TabIconProps> = ({icon, color, name, focused}) => {
               source={icon}
               resizeMode='contain'
               tintColor={color}
-              className='w-5 h-5 mb-1'
+              className='w-6 h-6 mt-6'
           />
-          <Text className ='text-[12px]' style={{ color : color }}>{name}</Text>
+          <Text
+          className="text-xs font-medium w-20 text-center whitespace-nowrap mt-1"
+          style={{ color }}
+          >
+          {name}
+          </Text>
       </View>
   )
 }
@@ -35,9 +40,9 @@ const TabsLayout = () => {
               tabBarInactiveTintColor: "#969595",
               tabBarStyle: {
                   backgroundColor: '#0d0d0d',
-                  borderTopWidth: 1,
+                  borderTopWidth: 0,
                   borderTopColor: '#0d0d0d',
-                  height: 64
+                  height: 70
                 }
           }}
       >
