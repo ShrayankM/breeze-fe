@@ -40,7 +40,6 @@ const UserBooks = () => {
       const jsonData = await response.json();
       const books = jsonData.data?.list || [];
 
-      console.log(`Books = ${books}`);
       setData(books);
       
     } catch (error) {
