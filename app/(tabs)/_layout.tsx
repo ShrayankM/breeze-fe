@@ -63,7 +63,7 @@ const TabsLayout = () => {
             }}
         />
 
-        <Tabs.Screen 
+        {/* <Tabs.Screen 
             name = "search"
             options={{
                 title: "Search",
@@ -77,7 +77,7 @@ const TabsLayout = () => {
                   />
                 )
             }}
-        />
+        /> */}
 
         <Tabs.Screen 
             name = "userBooks"
