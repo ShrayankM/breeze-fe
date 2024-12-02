@@ -19,6 +19,7 @@ const UserBooks = () => {
   const [data, setData] = useState<Book[]>([]);
   const [searchQuery, setSearchQuery] = React.useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
+  const [refreshing, setRefreshing] = useState(false); // Add refreshing state
 
   const { baseUrl } = getEnvironment();
 
@@ -72,6 +73,16 @@ const UserBooks = () => {
     }
   };
 
+  const onRefresh = async () => {
+    setRefreshing(true); // Set refreshing state to true
+    if (debouncedQuery) {
+      await searchBooks(debouncedQuery);
+    } else {
+      await getBooks();
+    }
+    setRefreshing(false); // Set refreshing state back to false
+  };
+
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedQuery(searchQuery);
@@ -89,7 +100,7 @@ const UserBooks = () => {
   }, [debouncedQuery]);
 
   const handlePress = (bookDetails: Book) => {
-    router.push({ pathname: '/(pages)/bookDetails', params: bookDetails });
+    router.push({ pathname: '/(pages)/bookDetailsUser', params: bookDetails });
   };
 
   return (
@@ -119,6 +130,8 @@ const UserBooks = () => {
         )}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
+        refreshing={refreshing} // Pass refreshing state
+        onRefresh={onRefresh} // Pass onRefresh function
       />
     </SafeAreaView>
   );

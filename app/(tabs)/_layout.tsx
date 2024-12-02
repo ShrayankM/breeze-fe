@@ -82,13 +82,13 @@ const TabsLayout = () => {
         <Tabs.Screen 
             name = "userBooks"
             options={{
-                title: "User Books",
+                title: "Library",
                 headerShown: false,
                 tabBarIcon: ({ color, focused }) => (
                   <TabIcon 
                       icon={icons.user}
                       color={color}
-                      name="User Books"
+                      name="Library"
                       focused={focused}
                   />
                 )

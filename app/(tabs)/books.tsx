@@ -26,6 +26,7 @@ const Books = () => {
   const [data, setData] = useState<Book[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
+  const [refreshing, setRefreshing] = useState(false); // Add refreshing state
 
   const { baseUrl } = getEnvironment();
 
@@ -77,6 +78,16 @@ const Books = () => {
     }
   };
 
+  const onRefresh = async () => {
+    setRefreshing(true); // Set refreshing state to true
+    if (debouncedQuery) {
+      await searchBooks(debouncedQuery);
+    } else {
+      await getBooks();
+    }
+    setRefreshing(false); // Set refreshing state back to false
+  };
+
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedQuery(searchQuery);
@@ -94,7 +105,7 @@ const Books = () => {
   }, [debouncedQuery]);
 
   const handlePress = (bookDetails: Book) => {
-    router.push({ pathname: '/(pages)/bookDetails', params: bookDetails });
+    router.push({ pathname: '/(pages)/bookDetailsGlobal', params: bookDetails });
   };
 
   return (
@@ -107,28 +118,26 @@ const Books = () => {
         onChangeText={setSearchQuery}
       />
 
-      {isLoading ? (
-        <ActivityIndicator style={styles.loader} size="large" color="#4F46E5" />
-      ) : (
-        <FlatList
-          style={styles.flatList}
-          data={data}
-          numColumns={1}
-          keyExtractor={({ code }) => code}
-          renderItem={({ item }) => (
-            <BookCard
-              name={item.name}
-              author={item.author}
-              category={item.category}
-              isbnSmall={item.isbnSmall}
-              thumbnail={item.thumbnail}
-              onPress={() => handlePress(item)}
-            />
-          )}
-          contentContainerStyle={styles.listContent}
-          showsVerticalScrollIndicator={false}
-        />
-      )}
+      <FlatList
+        style={styles.flatList}
+        data={data}
+        numColumns={1}
+        keyExtractor={({ code }) => code}
+        renderItem={({ item }) => (
+          <BookCard
+            name={item.name}
+            author={item.author}
+            category={item.category}
+            isbnSmall={item.isbnSmall}
+            thumbnail={item.thumbnail}
+            onPress={() => handlePress(item)}
+          />
+        )}
+        contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
+        refreshing={refreshing} // Pass refreshing state
+        onRefresh={onRefresh} // Pass onRefresh function
+      />
     </SafeAreaView>
   );
 };
