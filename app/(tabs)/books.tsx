@@ -94,7 +94,7 @@ const Books = () => {
   }, [debouncedQuery]);
 
   const handlePress = (bookDetails: Book) => {
-    router.push({ pathname: '/(pages)/bookDetails', params: bookDetails });
+    router.push({ pathname: '/(pages)/bookDetailsGlobal', params: bookDetails });
   };
 
   return (
