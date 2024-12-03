@@ -7,6 +7,7 @@ import { useLocalSearchParams } from 'expo-router';
 import CustomButton from '@/components/CustomButton';
 import { getEnvironment } from '../../constants/environment';
 import { MaterialIcons } from '@expo/vector-icons'; 
+import Toast from 'react-native-toast-message';
 
 type Book = {
   code: string;
@@ -41,37 +42,61 @@ const BookDetails = () => {
     }
   };
 
-  // const handlePostRequest = async () => {
-  //   const { baseUrl } = getEnvironment();
-  //   const requestBody = {
-  //     bookCode: bookDetails.code,
-  //     userCode: "UER832499997",
-  //     bookStatus: "ADDED",
-  //     currentPage: 10,
-  //     userRating: 4,
-  //     isDeleted: false,
-  //     wishlist: false,
-  //   };
+  const markBookAsReading = async () => {
+    const { baseUrl } = getEnvironment();
+    const requestBody = {
+      bookCode: bookDetails.code,
+      userCode: "UER832499997",
+      bookStatus: "READING"
+    };
 
-  //   try {
-  //     const response = await fetch(`${baseUrl}/v1/breeze/book/add-book`, {
-  //       method: 'POST',
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(requestBody),
-  //     });
+    try {
+      const response = await fetch(`${baseUrl}/v1/breeze/book/update-book`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
 
-  //     if (response.ok) {
-  //       console.log('Book successfully added');
-  //     } else {
-  //       console.error('Failed to add the book');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error in POST request:', error);
-  //   }
-  // };
+      if (response.ok) {
+        console.log('Book successfully marked as Read');
+      } else {
+        console.error('Failed to update the book status');
+      }
+    } catch (error) {
+      console.error('Error in POST request:', error);
+    }
+  };
+
+  const markBookAsCompleted = async () => {
+    const { baseUrl } = getEnvironment();
+    const requestBody = {
+      bookCode: bookDetails.code,
+      userCode: "UER832499997",
+      bookStatus: "COMPLETED",
+    };
+  
+    try {
+      const response = await fetch(`${baseUrl}/v1/breeze/book/update-book`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+  
+      if (response.ok) {
+        console.log('Book successfully marked as Completed');
+      } else {
+        console.error('Failed to update the book status');
+      }
+    } catch (error) {
+      console.error('Error in POST request:', error);
+    }
+  };
 
   useEffect(() => {
     getBookUsingCode();
@@ -142,7 +167,7 @@ const BookDetails = () => {
         {/* Add Button */}
         <CustomButton
           title="Mark as Reading"
-          handlePress={() => console.log('Reading Button Pressed!')}
+          handlePress={markBookAsReading}
           containerStyles={styles.buttonContainer}
           textStyles={styles.buttonText}
           color="#ce640b" // Optional: Override default color
@@ -150,7 +175,7 @@ const BookDetails = () => {
 
         <CustomButton
           title="Mark as Completed"
-          handlePress={() => console.log('Completed Button Pressed!')}
+          handlePress={markBookAsCompleted}
           containerStyles={styles.buttonContainer}
           textStyles={styles.buttonText}
           color="#05b146" // Optional: Override default color
