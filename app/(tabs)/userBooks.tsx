@@ -1,7 +1,8 @@
 import { View, Text, SafeAreaView, FlatList, TextInput, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { getEnvironment } from '@/constants/environment';
-import BookCard from '@/components/BookCard';
+// import BookCard from '@/components/BookCard';
+import BookUserCard from '@/components/BookUserCard';
 import { router } from 'expo-router';
 
 type Book = {
@@ -12,6 +13,7 @@ type Book = {
   author: string;
   category: string;
   thumbnail: string;
+  bookStatus: string;
 };
 
 const UserBooks = () => {
@@ -57,7 +59,7 @@ const UserBooks = () => {
         },
         body: JSON.stringify({
           userCode: 'UER832499997',
-          bookStatus: 'ADDED',
+          bookStatusList: ['ADDED', 'READING', 'COMPLETED'],
           limit: 2,
           offset: 0,
         }),
@@ -103,6 +105,19 @@ const UserBooks = () => {
     router.push({ pathname: '/(pages)/bookDetailsUser', params: bookDetails });
   };
 
+  const getStatusColor = (bookStatus: string) => {
+    switch (bookStatus) {
+      case 'ADDED':
+        return '#45a613';
+      case 'COMPLETED':
+        return '#a62c13';
+      case 'READING':
+        return '#e69e13';
+      default:
+        return 'gray';
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <TextInput
@@ -119,12 +134,14 @@ const UserBooks = () => {
         numColumns={1}
         keyExtractor={({ code }) => code}
         renderItem={({ item }) => (
-          <BookCard
+          <BookUserCard
             name={item.name}
             author={item.author}
             category={item.category}
             isbnSmall={item.isbnSmall}
             thumbnail={item.thumbnail}
+            bookStatus={item.bookStatus}
+            statusColor={getStatusColor(item.bookStatus)}
             onPress={() => handlePress(item)}
           />
         )}

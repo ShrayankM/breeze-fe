@@ -34,7 +34,7 @@ const BookCard: React.FC<BookCardProps> = ({
         </Text>
         <Text style={styles.author}>Author: {author}</Text>
         <Text style={styles.category}>{category}</Text>
-        <Text style={styles.isbn}>ISBN: {isbnSmall}</Text>
+        {/* <Text style={styles.isbn}>ISBN: {isbnSmall}</Text> */}
       </View>
     </TouchableOpacity>
   );
