@@ -1,6 +1,7 @@
-import { View, Text, SafeAreaView, StatusBar } from 'react-native';
-import { Link } from 'expo-router';
+import { View, Text, SafeAreaView, StatusBar, StyleSheet } from 'react-native';
+import { Link, router } from 'expo-router';
 import React from 'react';
+import CustomButton from '@/components/CustomButton';
 
 export default function App() {
     return (
@@ -8,10 +9,45 @@ export default function App() {
             <StatusBar barStyle="dark-content" />
             <View className='flex-1 justify-center items-center'>
                 <Text className='text-3xl'>Breeze</Text>
-                <Link href="/books" style={{ color: 'blue', marginTop: 16 }}>
+                {/* <Link href="/books" style={{ color: 'blue', marginTop: 16 }}>
                     Go to Books
-                </Link>
+                </Link> */}
+
+                {/* Go To Books Section */}
+                <CustomButton
+                    title="Go to Books"
+                    handlePress={() => router.push('/books')}
+                    containerStyles={styles.buttonContainer}
+                    textStyles={styles.buttonText}
+                    color="#d6aa31" // Optional: Override default color
+                />
+
+                {/* Go to Authentication Section */}
+                <CustomButton
+                    title="Go to Login"
+                    handlePress={() => router.push('/sign-in')}
+                    containerStyles={styles.buttonContainer}
+                    textStyles={styles.buttonText}
+                    color="#45433d" // Optional: Override default color
+                />
             </View>
         </SafeAreaView>
     );
 }
+
+const styles = StyleSheet.create({
+    buttonContainer: {
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      borderRadius: 10,
+      marginRight: 10,
+      marginLeft: 10,
+      marginTop: 5,
+      marginBottom: 10
+    },
+    buttonText: {
+      fontSize: 18,
+      fontWeight: '600',
+      color: '#FFFFFF',
+    }
+  });
