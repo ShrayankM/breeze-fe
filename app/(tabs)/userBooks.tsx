@@ -29,7 +29,7 @@ const UserBooks = () => {
     setIsLoading(true);
     try {
       const encodedQuery = encodeURIComponent(query);
-      const url = `${baseUrl}/v1/breeze/book/${encodedQuery}/user/UER832499997/search-books`;
+      const url = `${baseUrl}/v1/breeze/book/${encodedQuery}/user/UER644620874/search-books`;
 
       const response = await fetch(url, {
         method: 'GET',
@@ -58,7 +58,7 @@ const UserBooks = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userCode: 'UER832499997',
+          userCode: 'UER644620874',
           bookStatusList: ['ADDED', 'READING', 'COMPLETED'],
           limit: 2,
           offset: 0,

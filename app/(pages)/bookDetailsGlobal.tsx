@@ -45,7 +45,7 @@ const BookDetails = () => {
     const { baseUrl } = getEnvironment();
     const requestBody = {
       bookCode: bookDetails.code,
-      userCode: "UER832499997",
+      userCode: "UER644620874",
       bookStatus: "ADDED",
       currentPage: 10,
       userRating: 4,
