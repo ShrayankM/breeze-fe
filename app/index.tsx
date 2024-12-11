@@ -1,9 +1,15 @@
 import { View, Text, SafeAreaView, StatusBar, StyleSheet } from 'react-native';
-import { Link, router } from 'expo-router';
+import { Link, Redirect, router } from 'expo-router';
 import React from 'react';
 import CustomButton from '@/components/CustomButton';
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 export default function App() {
+
+    const {isLoading, isLoggedIn} = useGlobalContext();
+
+    if (!isLoading && isLoggedIn) return <Redirect href='/(tabs)/books' />
+
     return (
         <SafeAreaView className='flex-1 bg-white'>
             <StatusBar barStyle="dark-content" />

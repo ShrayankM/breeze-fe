@@ -5,8 +5,12 @@ import FormField from '@/components/FormField'
 import CustomButton from '@/components/CustomButton'
 import { Link, router } from 'expo-router'
 import { getEnvironment } from '../../constants/environment';
+import { createUser } from '@/lib/appwrite'
+import { useGlobalContext } from '@/context/GlobalProvider'
 
 const SignUp = () => {
+
+  const {setUser, setIsLoggedIn} = useGlobalContext();
 
   const [form, setForm] = useState({
     username: '',
@@ -24,32 +28,14 @@ const SignUp = () => {
 
     setisSubmitting(true);
 
-    const { baseUrl } = getEnvironment();
-
-    const requestBody = {
-      userName: form.username,
-      emailAddress: form.email,
-      password: form.password
-    };
-
     try {
-      const response = await fetch(`${baseUrl}/v1/breeze/user/create-user`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-      });
+      const result = await createUser(form.email, form.password, form.username);
+      setUser(result);
+      setIsLoggedIn(true);
 
-      if (response.ok) {
-        router.replace('/(tabs)/books')
-        console.log('User created successfully');
-      } else {
-        console.error('Failed to create new user');
-      }
-    } catch (error) {
-      console.error('Error in POST request:', error);
+      router.replace('/(tabs)/books');
+    } catch( error ) {
+      console.error('Error in POST request', error);
     } finally {
       setisSubmitting(false);
     }

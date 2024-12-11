@@ -11,7 +11,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "package": "com.breeze"
     },
     "android": {
       "adaptiveIcon": {
@@ -19,7 +20,8 @@
       },
       "permissions": [
         "INTERNET"
-      ]
+      ],
+      "package": "com.breeze"
     },
     "web": {
       "bundler": "metro",
