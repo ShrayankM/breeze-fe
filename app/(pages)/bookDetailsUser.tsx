@@ -8,6 +8,7 @@ import CustomButton from '@/components/CustomButton';
 import { getEnvironment } from '../../constants/environment';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import Toast from 'react-native-toast-message';
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 type Book = {
   code: string;
@@ -24,6 +25,7 @@ type Book = {
 };
 
 const BookDetails = () => {
+  const { user } = useGlobalContext();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<Book | null>(null);
   const [isExpanded, setIsExpanded] = useState(false); 
@@ -46,7 +48,7 @@ const BookDetails = () => {
     const { baseUrl } = getEnvironment();
     const requestBody = {
       bookCode: bookDetails.code,
-      userCode: "UER644620874",
+      userCode: user.userCode,
       bookStatus: "READING"
     };
 
@@ -74,7 +76,7 @@ const BookDetails = () => {
     const { baseUrl } = getEnvironment();
     const requestBody = {
       bookCode: bookDetails.code,
-      userCode: "UER644620874",
+      userCode: user.userCode,
       bookStatus: "COMPLETED",
     };
   
