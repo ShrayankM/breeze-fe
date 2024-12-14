@@ -104,6 +104,35 @@ const BookDetails = () => {
     }
   };
 
+  const markAsDeleted = async () => {
+    const { baseUrl } = getEnvironment();
+    const requestBody = {
+      bookCode: bookDetails.code,
+      userCode: user.userCode,
+      isDeleted: 1
+    };
+  
+    try {
+      const response = await fetch(`${baseUrl}/v1/breeze/book/update-book`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+  
+      if (response.ok) {
+        router.replace('/(tabs)/userBooks');
+        console.log('Book successfully deleted');
+      } else {
+        console.error('Failed to delete the book');
+      }
+    } catch (error) {
+      console.error('Error in POST request:', error);
+    }
+  };
+
   useEffect(() => {
     getBookUsingCode();
   }, []);
@@ -213,7 +242,7 @@ const BookDetails = () => {
 
       <CustomButton
           title="Delete From Library"
-          handlePress={() => {}}
+          handlePress={markAsDeleted}
           containerStyles={styles.buttonContainer}
           textStyles={styles.buttonText}
           color="#000000" // Optional: Override default color
