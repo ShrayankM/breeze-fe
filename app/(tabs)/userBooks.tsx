@@ -1,8 +1,10 @@
 import { View, Text, SafeAreaView, FlatList, TextInput, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { getEnvironment } from '@/constants/environment';
-import BookCard from '@/components/BookCard';
+// import BookCard from '@/components/BookCard';
+import BookUserCard from '@/components/BookUserCard';
 import { router } from 'expo-router';
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 type Book = {
   code: string;
@@ -12,9 +14,11 @@ type Book = {
   author: string;
   category: string;
   thumbnail: string;
+  bookStatus: string;
 };
 
 const UserBooks = () => {
+  const { user } = useGlobalContext();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<Book[]>([]);
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -27,7 +31,7 @@ const UserBooks = () => {
     setIsLoading(true);
     try {
       const encodedQuery = encodeURIComponent(query);
-      const url = `${baseUrl}/v1/breeze/book/${encodedQuery}/user/UER832499997/search-books`;
+      const url = `${baseUrl}/v1/breeze/book/${encodedQuery}/user/${user.userCode}/search-books`;
 
       const response = await fetch(url, {
         method: 'GET',
@@ -56,8 +60,8 @@ const UserBooks = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userCode: 'UER832499997',
-          bookStatus: 'ADDED',
+          userCode: user.userCode,
+          bookStatusList: ['ADDED', 'READING', 'COMPLETED'],
           limit: 2,
           offset: 0,
         }),
@@ -103,6 +107,19 @@ const UserBooks = () => {
     router.push({ pathname: '/(pages)/bookDetailsUser', params: bookDetails });
   };
 
+  const getStatusColor = (bookStatus: string) => {
+    switch (bookStatus) {
+      case 'ADDED':
+        return '#45a613';
+      case 'COMPLETED':
+        return '#a62c13';
+      case 'READING':
+        return '#e69e13';
+      default:
+        return 'gray';
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <TextInput
@@ -119,12 +136,14 @@ const UserBooks = () => {
         numColumns={1}
         keyExtractor={({ code }) => code}
         renderItem={({ item }) => (
-          <BookCard
+          <BookUserCard
             name={item.name}
             author={item.author}
             category={item.category}
             isbnSmall={item.isbnSmall}
             thumbnail={item.thumbnail}
+            bookStatus={item.bookStatus}
+            statusColor={getStatusColor(item.bookStatus)}
             onPress={() => handlePress(item)}
           />
         )}
@@ -164,6 +183,11 @@ const styles = StyleSheet.create({
   listContent: {
     paddingHorizontal: 10,
     paddingBottom: 10,
+  },
+  loader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

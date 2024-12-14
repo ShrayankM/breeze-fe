@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { getEnvironment } from '@/constants/environment';
 import BookCard from '@/components/BookCard';
 import { router } from 'expo-router';
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 type Book = {
   code: string;
@@ -22,6 +23,7 @@ type Book = {
 };
 
 const Books = () => {
+  const { user } = useGlobalContext();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<Book[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -64,7 +66,7 @@ const Books = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userCode: 'USR12345',
+          userCode: user.userCode,
         }),
       });
 

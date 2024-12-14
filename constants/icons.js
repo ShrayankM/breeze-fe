@@ -4,6 +4,8 @@ import user from "../assets/icons/user.png";
 import wishlist from "../assets/icons/wishlist.png";
 import request from "../assets/icons/request.png";
 import add from "../assets/icons/add.png";
+import view from "../assets/icons/view.png";
+import hide from "../assets/icons/hide.png";
 
 
 export default {
@@ -12,5 +14,7 @@ export default {
     user,
     wishlist,
     request,
-    add
+    add,
+    view,
+    hide
 };
