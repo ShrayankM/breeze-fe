@@ -3,12 +3,12 @@ import {
   View, Text, Image, StyleSheet, ActivityIndicator, SafeAreaView, 
   StatusBar, ScrollView, TouchableOpacity 
 } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import CustomButton from '@/components/CustomButton';
 import { getEnvironment } from '../../constants/environment';
 import { MaterialIcons } from '@expo/vector-icons'; 
-import { useGlobalContext } from '@/context/GlobalProvider';
-import { router } from 'expo-router';
+import Toast from 'react-native-toast-message';
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 type Book = {
   code: string;
@@ -44,20 +44,16 @@ const BookDetails = () => {
     }
   };
 
-  const handlePostRequest = async () => {
+  const addToLibrary = async () => {
     const { baseUrl } = getEnvironment();
     const requestBody = {
       bookCode: bookDetails.code,
       userCode: user.userCode,
-      bookStatus: "LIBRARY",
-      currentPage: 10,
-      userRating: 4,
-      isDeleted: false,
-      wishlist: false,
+      bookStatus: "LIBRARY"
     };
 
     try {
-      const response = await fetch(`${baseUrl}/v1/breeze/book/add-book`, {
+      const response = await fetch(`${baseUrl}/v1/breeze/book/update-book`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -68,42 +64,9 @@ const BookDetails = () => {
 
       if (response.ok) {
         router.replace('/(tabs)/userBooks');
-        console.log('Book successfully added');
+        console.log('Book successfully marked as Read');
       } else {
-        console.error('Failed to add the book');
-      }
-    } catch (error) {
-      console.error('Error in POST request:', error);
-    }
-  };
-
-  const addBookToWishList = async () => {
-    const { baseUrl } = getEnvironment();
-    const requestBody = {
-      bookCode: bookDetails.code,
-      userCode: user.userCode,
-      bookStatus: "WISHLIST",
-      currentPage: 10,
-      userRating: 4,
-      isDeleted: false,
-      wishlist: false,
-    };
-
-    try {
-      const response = await fetch(`${baseUrl}/v1/breeze/book/add-book`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-      });
-
-      if (response.ok) {
-        router.replace('/(tabs)/wishlist');
-        console.log('Book successfully added');
-      } else {
-        console.error('Failed to add the book');
+        console.error('Failed to update the book status');
       }
     } catch (error) {
       console.error('Error in POST request:', error);
@@ -149,13 +112,6 @@ const BookDetails = () => {
           </View>
         </View>
 
-        {/* Book Metadata */}
-        {/* <View style={styles.metadataContainer}>
-          <Text style={styles.metadataText}><Text style={styles.bold}>Category:</Text> {data.category}</Text>
-          <Text style={styles.metadataText}><Text style={styles.bold}>Pages:</Text> {data.pages}</Text>
-          <Text style={styles.metadataText}><Text style={styles.bold}>ISBN:</Text> {data.isbnLarge}</Text>
-        </View> */}
-
         <View style={styles.metadataContainer}>
           <View style={styles.horizontalRow}>
             {/* Value Row */}
@@ -182,6 +138,7 @@ const BookDetails = () => {
           </View>
         </View>
 
+
         {/* Description Section */}
         <View style={styles.container}>
           <View style={styles.descriptionContainer}>
@@ -205,18 +162,18 @@ const BookDetails = () => {
         {/* Add Button */}
         <CustomButton
           title="Add to Library"
-          handlePress={handlePostRequest}
+          handlePress={addToLibrary}
           containerStyles={styles.buttonContainer}
           textStyles={styles.buttonText}
           color="#0571b1" // Optional: Override default color
         />
 
-        <CustomButton
-          title="Add to Wishlist"
-          handlePress={addBookToWishList}
+      <CustomButton
+          title="Delete From Wishlist"
+          handlePress={() => {}}
           containerStyles={styles.buttonContainer}
           textStyles={styles.buttonText}
-          color="#45a613" // Optional: Override default color
+          color="#000000" // Optional: Override default color
       />
       </SafeAreaView>
     </ScrollView>
@@ -230,25 +187,28 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#ffffff'
   },
   errorText: {
     fontSize: 16,
     color: 'red',
   },
   safeArea: {
-    flex: 1,
+    flex: 1
   },
   headerContainer: {
     flexDirection: 'row',
     padding: 15,
+    borderBottomWidth: 0,
+    borderBottomColor: '#e0e0e0',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowRadius: 4
   },
   thumbnail: {
-    width: 120,
-    height: 160,
+    width: 130,
+    height: 180,
     borderRadius: 10,
     marginRight: 15,
   },
@@ -286,7 +246,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   container: {
-    padding: 20,
+    padding: 20
   },
   descriptionContainer: {
     flexDirection: 'row',
@@ -313,7 +273,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     borderRadius: 25,
     marginHorizontal: 15,
-    marginTop: 20,
+    marginTop: 5,
     marginBottom: 15,
     backgroundColor: '#6200EE',
     elevation: 4,
@@ -324,6 +284,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
   },
+  tabContainer: {
+    flexDirection: 'row', // Ensures items are side by side
+    justifyContent: 'flex-start', // Aligns items to the left
+    marginVertical: 10, // Adjust vertical spacing as needed
+  },
+  
   statusText: {
     fontSize: 10,
     color: '#fff',
@@ -355,12 +321,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
+    maxWidth: 150,
   },
   
   headingText: {
     fontSize: 14,
     fontWeight: 'normal',
-    color: '#000000'
+    color: '#000000',
   },
 
   categoryText: {
@@ -369,4 +336,6 @@ const styles = StyleSheet.create({
     maxWidth: 120, // Optional: Limit max width for better wrapping
     fontSize: 18,
   }
+  
+  
 });

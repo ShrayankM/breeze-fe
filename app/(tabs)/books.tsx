@@ -139,6 +139,9 @@ const Books = () => {
         showsVerticalScrollIndicator={false}
         refreshing={refreshing} // Pass refreshing state
         onRefresh={onRefresh} // Pass onRefresh function
+        ListFooterComponent={
+          isLoading ? <ActivityIndicator size="large" color="#1b1b1a" style={styles.loader} /> : null
+        }
       />
     </SafeAreaView>
   );
@@ -147,35 +150,37 @@ const Books = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1b1b1a',
+    backgroundColor: '#d1d1d1', // Lighter background for a more modern look
+    paddingHorizontal: 15, // Padding around the entire screen for better spacing
   },
   input: {
-    margin: 15,
+    marginTop: 20,
     height: 50,
     backgroundColor: '#FFFFFF',
-    borderRadius: 10,
-    paddingHorizontal: 15,
+    borderRadius: 15, // Slightly more rounded corners for a modern touch
+    paddingHorizontal: 20,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
-    fontSize: 14,
-    color: '#111827',
+    borderColor: '#cacac9',
+    fontSize: 16,
+    color: '#333333', // Darker text for better readability
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 3,
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
+    elevation: 4,
   },
   flatList: {
     flex: 1,
+    marginTop: 10
   },
   listContent: {
-    paddingHorizontal: 10,
-    paddingBottom: 10,
+    paddingBottom: 20, // Extra padding for modern scrolling behavior
   },
   loader: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 30, // Padding for better loader placement
   },
 });
 

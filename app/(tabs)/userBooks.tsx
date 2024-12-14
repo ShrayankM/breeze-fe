@@ -61,7 +61,7 @@ const UserBooks = () => {
         },
         body: JSON.stringify({
           userCode: user.userCode,
-          bookStatusList: ['ADDED', 'READING', 'COMPLETED'],
+          bookStatusList: ['ADDED', 'READING', 'COMPLETED', 'LIBRARY'],
           limit: 2,
           offset: 0,
         }),
@@ -109,12 +109,12 @@ const UserBooks = () => {
 
   const getStatusColor = (bookStatus: string) => {
     switch (bookStatus) {
-      case 'ADDED':
-        return '#45a613';
+      case 'LIBRARY':
+        return '#0571b1'; // Green for added
       case 'COMPLETED':
-        return '#a62c13';
+        return '#a62c13'; // Red for completed
       case 'READING':
-        return '#e69e13';
+        return '#e69e13'; // Yellow for reading
       default:
         return 'gray';
     }
@@ -143,6 +143,7 @@ const UserBooks = () => {
             isbnSmall={item.isbnSmall}
             thumbnail={item.thumbnail}
             bookStatus={item.bookStatus}
+            // bookStatus={getStatusText(item.bookStatus)}
             statusColor={getStatusColor(item.bookStatus)}
             onPress={() => handlePress(item)}
           />
@@ -159,35 +160,37 @@ const UserBooks = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1b1b1a', // Tailwind's gray-100 equivalent
+    backgroundColor: '#d1d1d1', // Light background for a clean and modern feel
+    paddingHorizontal: 15, // Padding around the screen for better spacing
   },
   input: {
-    margin: 15,
+    marginTop: 20,
     height: 50,
-    backgroundColor: '#FFFFFF', // White
-    borderRadius: 10,
-    paddingHorizontal: 15,
+    backgroundColor: '#FFFFFF', // White background for the search bar
+    borderRadius: 15, // More rounded corners for modern design
+    paddingHorizontal: 20,
     borderWidth: 1,
-    borderColor: '#E5E7EB', // Tailwind's gray-200 equivalent
-    fontSize: 14,
-    color: '#111827', // Tailwind's gray-800 equivalent
+    borderColor: '#cacac9', // Light gray border
+    fontSize: 16,
+    color: '#333333', // Darker text for better readability
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 3, // Android shadow
+    shadowRadius: 3,
+    elevation: 4, // Adds shadow for Android
   },
   flatList: {
     flex: 1,
+    marginTop: 10
   },
   listContent: {
-    paddingHorizontal: 10,
-    paddingBottom: 10,
+    paddingBottom: 20, // Added padding to ensure list isn't cramped
   },
   loader: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 30, // Padding for better loader placement
   },
 });
 

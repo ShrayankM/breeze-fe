@@ -6,6 +6,8 @@ import request from "../assets/icons/request.png";
 import add from "../assets/icons/add.png";
 import view from "../assets/icons/view.png";
 import hide from "../assets/icons/hide.png";
+import home from "../assets/icons/home.png";
+import agenda from "../assets/icons/agenda.png";
 
 
 export default {
@@ -16,5 +18,7 @@ export default {
     request,
     add,
     view,
-    hide
+    hide,
+    home,
+    agenda
 };

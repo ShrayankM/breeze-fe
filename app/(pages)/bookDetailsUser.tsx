@@ -3,12 +3,13 @@ import {
   View, Text, Image, StyleSheet, ActivityIndicator, SafeAreaView, 
   StatusBar, ScrollView, TouchableOpacity 
 } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import CustomButton from '@/components/CustomButton';
 import { getEnvironment } from '../../constants/environment';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import Toast from 'react-native-toast-message';
 import { useGlobalContext } from "@/context/GlobalProvider";
+import { routeToScreen } from 'expo-router/build/useScreens';
 
 type Book = {
   code: string;
@@ -20,8 +21,9 @@ type Book = {
   category: string;
   thumbnail: string;
   publishedDate: string;
-  description:string;
+  description: string;
   pages: string;
+  status: string;
 };
 
 const BookDetails = () => {
@@ -63,6 +65,7 @@ const BookDetails = () => {
       });
 
       if (response.ok) {
+        router.replace('/(tabs)/userBooks');
         console.log('Book successfully marked as Read');
       } else {
         console.error('Failed to update the book status');
@@ -91,6 +94,7 @@ const BookDetails = () => {
       });
   
       if (response.ok) {
+        router.replace('/(tabs)/userBooks');
         console.log('Book successfully marked as Completed');
       } else {
         console.error('Failed to update the book status');
@@ -137,14 +141,38 @@ const BookDetails = () => {
             <Text style={styles.bookAuthor}>{data.author}</Text>
             <Text style={styles.bookDate}>Released {data.publishedDate}</Text>
           </View>
+
+          {/* <View style={[styles.statusCard]}>
+            
+          </View> */}
         </View>
 
-        {/* Book Metadata */}
         <View style={styles.metadataContainer}>
-          <Text style={styles.metadataText}><Text style={styles.bold}>Category:</Text> {data.category}</Text>
-          <Text style={styles.metadataText}><Text style={styles.bold}>Pages:</Text> {data.pages}</Text>
-          <Text style={styles.metadataText}><Text style={styles.bold}>ISBN:</Text> {data.isbnLarge}</Text>
+          <View style={styles.horizontalRow}>
+            {/* Value Row */}
+            <View style={styles.headingContainer}>
+              <Text style={styles.valueText}>4.2</Text>
+              <Text style={styles.headingText}>Rating</Text>
+            </View>
+
+            <View style={styles.headingContainer}>
+              <Text style={[styles.valueText, styles.categoryText]}>{data.category}</Text>
+              <Text style={styles.headingText}>Category</Text>
+            </View>
+
+            {/* Heading Row */}
+            <View style={styles.headingContainer}>
+              <Text style={styles.valueText}>{data.pages}</Text>
+              <Text style={styles.headingText}>Pages</Text>
+            </View>
+
+            <View style={styles.headingContainer}>
+              <Text style={styles.valueText}>EN</Text>
+              <Text style={styles.headingText}>Language</Text>
+            </View>
+          </View>
         </View>
+
 
         {/* Description Section */}
         <View style={styles.container}>
@@ -154,7 +182,7 @@ const BookDetails = () => {
               <MaterialIcons 
                 name={isExpanded ? 'expand-less' : 'expand-more'} 
                 size={24} 
-                color="#6200EE" 
+                color="#095482" 
               />
             </TouchableOpacity>
           </View>
@@ -168,20 +196,28 @@ const BookDetails = () => {
 
         {/* Add Button */}
         <CustomButton
-          title="Mark as Reading"
+          title="Reading"
           handlePress={markBookAsReading}
           containerStyles={styles.buttonContainer}
           textStyles={styles.buttonText}
-          color="#ce640b" // Optional: Override default color
+          color="#e69e13" // Optional: Override default color
         />
 
         <CustomButton
-          title="Mark as Completed"
+          title="Completed"
           handlePress={markBookAsCompleted}
           containerStyles={styles.buttonContainer}
           textStyles={styles.buttonText}
-          color="#05b146" // Optional: Override default color
+          color="#a62c13" // Optional: Override default color
         />
+
+      <CustomButton
+          title="Delete From Library"
+          handlePress={() => {}}
+          containerStyles={styles.buttonContainer}
+          textStyles={styles.buttonText}
+          color="#000000" // Optional: Override default color
+      />
       </SafeAreaView>
     </ScrollView>
   );
@@ -194,81 +230,169 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#ffffff'
   },
   errorText: {
     fontSize: 16,
     color: 'red',
   },
   safeArea: {
-    flex: 1,
-    backgroundColor: '#F5F5F5',
+    flex: 1
   },
   headerContainer: {
     flexDirection: 'row',
-    padding: 10,
+    padding: 15,
+    borderBottomWidth: 0,
+    borderBottomColor: '#e0e0e0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4
   },
   thumbnail: {
-    width: 120,
-    height: 160,
-    marginRight: 10,
+    width: 130,
+    height: 180,
+    borderRadius: 10,
+    marginRight: 15,
   },
   bookInfo: {
     flex: 1,
     justifyContent: 'center',
   },
   bookTitle: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: 'bold',
+    color: '#333',
     marginBottom: 5,
   },
   bookAuthor: {
-    fontSize: 16,
-    color: '#757575',
+    fontSize: 18,
+    color: '#353635',
     marginBottom: 5,
   },
   bookDate: {
-    fontSize: 14,
-    color: '#757575',
+    fontSize: 16,
+    color: '#353635',
   },
   metadataContainer: {
-    padding: 10,
+    backgroundColor: '#dbdbdb',
+    borderRadius: 25,
+    marginLeft: 8,
+    marginRight: 8
   },
   metadataText: {
-    fontSize: 14,
-    marginVertical: 2,
+    fontSize: 16,
+    color: '#555',
+    marginVertical: 5,
   },
   bold: {
     fontWeight: 'bold',
   },
   container: {
-    padding: 10,
+    padding: 20
   },
   descriptionContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
   },
   descriptionTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
+    color: '#333',
   },
   descriptionText: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#333',
+    lineHeight: 22,
     marginTop: 5,
+    paddingHorizontal: 15,
   },
   buttonContainer: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    marginRight: 10,
-    marginLeft: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 25,
+    marginHorizontal: 15,
     marginTop: 5,
-    marginBottom: 10
+    marginBottom: 15,
+    backgroundColor: '#6200EE',
+    elevation: 4,
   },
   buttonText: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#FFFFFF',
+    color: '#fff',
+    textAlign: 'center',
   },
+  tabContainer: {
+    flexDirection: 'row', // Ensures items are side by side
+    justifyContent: 'flex-start', // Aligns items to the left
+    marginVertical: 10, // Adjust vertical spacing as needed
+  },
+  
+  statusText: {
+    fontSize: 10,
+    color: '#000000',
+    fontWeight: 'bold',
+  },
+
+  horizontalRow: {
+    flexDirection: 'row', // Aligns both value and heading rows horizontally
+    justifyContent: 'space-around', // Distributes space between items
+    alignItems: 'center', // Aligns items in the center vertically
+    marginVertical: 10, // Adjust vertical spacing
+  },
+  
+  valueContainer: {
+    flexDirection: 'column', // Stack the values vertically
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  
+  valueText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#000000', // Custom color for the value
+    marginBottom: 5, // Adjust spacing between values
+  },
+  
+  headingContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    maxWidth: 150,
+  },
+  
+  headingText: {
+    fontSize: 14,
+    fontWeight: 'normal',
+    color: '#000000',
+  },
+
+  categoryText: {
+    flexWrap: 'wrap', // Allow text to wrap to the next line
+    textAlign: 'center', // Center align the text
+    maxWidth: 120, // Optional: Limit max width for better wrapping
+    fontSize: 18,
+  },
+  statusCard: {
+    width: 80,
+    height: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 2,
+    marginHorizontal: 8,
+    borderRadius: 14,
+    shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 3,
+      elevation: 3,
+  },
+  
+  
 });
