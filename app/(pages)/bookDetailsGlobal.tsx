@@ -22,6 +22,9 @@ type Book = {
   publishedDate: string;
   description: string;
   pages: string;
+  language: string;
+  globalRating: number;
+  userRating: number;
 };
 
 const BookDetails = () => {
@@ -160,7 +163,7 @@ const BookDetails = () => {
           <View style={styles.horizontalRow}>
             {/* Value Row */}
             <View style={styles.headingContainer}>
-              <Text style={styles.valueText}>4.2</Text>
+              <Text style={styles.valueText}>{data.globalRating}</Text>
               <Text style={styles.headingText}>Rating</Text>
             </View>
 
@@ -176,7 +179,7 @@ const BookDetails = () => {
             </View>
 
             <View style={styles.headingContainer}>
-              <Text style={styles.valueText}>EN</Text>
+              <Text style={styles.valueText}>{data.language}</Text>
               <Text style={styles.headingText}>Language</Text>
             </View>
           </View>

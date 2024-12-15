@@ -31,11 +31,6 @@ type Book = {
   userRating: number;
 };
 
-interface RatingStarsProps {
-  initialRating: number; 
-  onRatingChange: (newRating: number) => void; 
-}
-
 const BookDetails = () => {
   const { user } = useGlobalContext();
   const [isLoading, setIsLoading] = useState(true);
@@ -43,12 +38,6 @@ const BookDetails = () => {
   const [isExpanded, setIsExpanded] = useState(false); 
   const bookDetails = useLocalSearchParams();
   const [rating, setRating] = useState<number>(0);
-
-  useEffect(() => {
-    if (bookDetails?.userRating) {
-      setRating(Number(bookDetails.userRating));
-    }
-  }, [bookDetails]);
 
   const handleRatingPress = async (star: number) => {
     const { baseUrl } = getEnvironment();
@@ -198,6 +187,16 @@ const BookDetails = () => {
   useEffect(() => {
     getBookUsingCode();
   }, []);
+
+  useEffect(() => {
+    if (rating === 0) {
+      if (bookDetails?.userRating) {
+        setRating(Number(bookDetails.userRating));
+      } else if (data?.globalRating) {
+        setRating(data.globalRating);
+      }
+    }
+  }, [bookDetails, data, rating]);
 
   if (isLoading) {
     return (
