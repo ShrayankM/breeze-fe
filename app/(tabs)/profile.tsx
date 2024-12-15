@@ -5,6 +5,7 @@ import { signOut } from '@/lib/appwrite';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { router } from 'expo-router';
 import { getEnvironment } from '@/constants/environment';
+import { LinearGradient } from 'expo-linear-gradient';
 
 type UserData = {
   code: string;
@@ -34,7 +35,7 @@ const Profile = () => {
       const jsonData = await response.json();
       setUserInfo(jsonData.data || null);
     } catch (error) {
-      console.error('Error while fetching user-information', error);
+      console.error('Error while fetching user information', error);
     }
   };
 
@@ -66,14 +67,38 @@ const Profile = () => {
 
   const { readingBookCount, completedBookCount, wishlistedBookCount, totalBooksInLibrary } = userInfo;
 
+  const stats = [
+    {
+      label: 'Reading',
+      count: readingBookCount,
+      total: totalBooksInLibrary,
+      color: '#FFB6C1',
+    },
+    {
+      label: 'Completed',
+      count: completedBookCount,
+      total: totalBooksInLibrary,
+      color: '#87CEFA',
+    },
+    {
+      label: 'Wishlisted',
+      count: wishlistedBookCount,
+      total: totalBooksInLibrary + wishlistedBookCount,
+      color: '#90EE90',
+    },
+    {
+      label: 'In Library',
+      count: totalBooksInLibrary,
+      total: totalBooksInLibrary + wishlistedBookCount,
+      color: '#FFD700',
+    },
+  ];
+
   return (
     <SafeAreaView style={styles.container}>
-
       {/* Profile Image Placeholder */}
       <View style={styles.profileImageContainer}>
-        <Text style={styles.profileInitials}>
-          {getInitials(userInfo.userName)}
-        </Text>
+        <Text style={styles.profileInitials}>{getInitials(userInfo.userName)}</Text>
       </View>
 
       {/* Header Section */}
@@ -82,39 +107,38 @@ const Profile = () => {
         <Text style={styles.email}>{userInfo.emailAddress}</Text>
       </View>
 
-      {/* Book Stats with Percentages */}
+      {/* Book Stats with Gradients */}
       <View style={styles.statsContainer}>
-        <View style={[styles.statBox, { backgroundColor: '#FFB6C1' }]}>
-          <Text style={styles.statNumber}>{`${calculatePercentage(readingBookCount, totalBooksInLibrary)}%`}</Text>
-          <Text style={styles.statLabel}>Reading</Text>
-          <Text style={styles.statCount}>{`${readingBookCount} Books`}</Text>
-        </View>
-        <View style={[styles.statBox, { backgroundColor: '#87CEFA' }]}>
-          <Text style={styles.statNumber}>{`${calculatePercentage(completedBookCount, totalBooksInLibrary)}%`}</Text>
-          <Text style={styles.statLabel}>Completed</Text>
-          <Text style={styles.statCount}>{`${completedBookCount} Books`}</Text>
-        </View>
-        <View style={[styles.statBox, { backgroundColor: '#90EE90' }]}>
-          <Text style={styles.statNumber}>{`${calculatePercentage(wishlistedBookCount, totalBooksInLibrary + wishlistedBookCount)}%`}</Text>
-          <Text style={styles.statLabel}>Wishlisted</Text>
-          <Text style={styles.statCount}>{`${wishlistedBookCount} Books`}</Text>
-        </View>
-        <View style={[styles.statBox, { backgroundColor: '#FFD700' }]}>
-        <Text style={styles.statNumber}>{`${calculatePercentage(totalBooksInLibrary, totalBooksInLibrary + wishlistedBookCount)}%`}</Text>
-          <Text style={styles.statLabel}>In Library</Text>
-          <Text style={styles.statCount}>{`${totalBooksInLibrary} Books`}</Text>
-        </View>
+        {stats.map((stat, index) => (
+          <LinearGradient
+            key={index}
+            colors={[stat.color, 'transparent']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: Math.min(Number(calculatePercentage(stat.count, stat.total)) / 100, 1), y: 0 }}
+            style={styles.statCard}
+          >
+            <View style={styles.statContent}>
+              <View style={styles.statTextContainer}>
+                <Text style={styles.statNumber}>{`${calculatePercentage(stat.count, stat.total)}%`}</Text>
+                <Text style={styles.statLabel}>{stat.label}</Text>
+              </View>
+              {/* <Text style={styles.statLabel}>{stat.label}</Text> */}
+              <Text style={styles.statCount}>{`${stat.count}`}</Text>
+            </View>
+          </LinearGradient>
+        ))}
       </View>
+
 
       {/* Logout Button */}
       <View style={styles.logoutContainer}>
         <CustomButton
-            title="Logout"
-            handlePress={logout}
-            containerStyles={styles.buttonContainer}
-            textStyles={styles.buttonText}
-            color="#eb3467" // Optional: Override default color
-          />
+          title="Logout"
+          handlePress={logout}
+          containerStyles={styles.buttonContainer}
+          textStyles={styles.buttonText}
+          color="#57161f"
+        />
       </View>
     </SafeAreaView>
   );
@@ -123,10 +147,98 @@ const Profile = () => {
 export default Profile;
 
 const styles = StyleSheet.create({
-  logoutButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 40,
-    borderRadius: 8,
+  statCard: {
+    width: '100%',
+    borderRadius: 10,
+    padding: 15,
+    marginTop: 20,
+    backgroundColor: '#FFFFFF',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+  },
+  statContent: {
+    flexDirection: 'row', // Align data side by side
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  statTextContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8, // Space between percentage and label
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#F5F5F5',
+    padding: 20,
+  },
+  profileImageContainer: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#d9f095',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginBottom: 20,
+    marginTop: 20,
+  },
+  profileInitials: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+  header: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  userName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  email: {
+    fontSize: 14,
+    color: '#777',
+  },
+  statsContainer: {
+    flex: 1,
+    marginTop: 10,
+  },
+  statBox: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 15
+  },
+  statNumberContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  statNumber: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 5,
+  },
+  statLabel: {
+    fontSize: 16,
+    color: '#555',
+    marginBottom: 5,
+    fontStyle: "italic"
+  },
+  statCount: {
+    fontSize: 20,
+    color: '#333',
+    fontWeight: "bold",
+    marginRight: 15,
+  },
+  logoutContainer: {
+    marginTop: 20,
+    alignItems: 'center',
   },
   buttonText: {
     fontSize: 18,
@@ -138,84 +250,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     borderRadius: 25,
     marginHorizontal: 15,
-    marginVertical: 10, // Reduced vertical margin
-    backgroundColor: '#6200EE',
+    backgroundColor: '#520914',
     elevation: 4,
-    width: "100%"
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#F5F5F5',
-    padding: 20,
-  },
-  profileImageContainer: {
-    width: 100, // Slightly smaller
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: '#d9f095',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    marginBottom: 10, // Reduced margin
-    marginTop: 10, // Reduced top margin
-  },
-  profileInitials: {
-    fontSize: 32, // Slightly smaller font size
-    fontWeight: 'bold',
-    color: '#000000',
-  },
-  header: {
-    alignItems: 'center',
-    marginVertical: 10, // Reduced margin
-  },
-  userName: {
-    fontSize: 24, // Adjusted for balance
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 5, // Added slight spacing under username
-  },
-  email: {
-    fontSize: 14,
-    color: '#777',
-    marginBottom: 10, // Reduced spacing below email
-  },
-  statsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    paddingVertical: 10, // Reduced vertical padding
-  },
-  statBox: {
-    width: '48%',
-    marginVertical: 8, // Reduced margin
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 15, // Reduced padding
-    borderRadius: 10,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  statNumber: {
-    fontSize: 22, // Slightly smaller
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  statLabel: {
-    fontSize: 14,
-    color: '#555',
-    marginTop: 3,
-  },
-  statCount: {
-    fontSize: 12,
-    color: '#333',
-    marginTop: 1,
-  },
-  logoutContainer: {
-    marginTop: 20, // Reduced spacing above logout button
-    alignItems: 'center',
+    width: '100%',
   },
   noDataContainer: {
     flex: 1,

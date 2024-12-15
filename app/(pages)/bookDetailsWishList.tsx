@@ -126,7 +126,7 @@ const BookDetails = () => {
   }
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.scrollArea}>
       <SafeAreaView style={styles.safeArea}>
         <StatusBar barStyle="light-content" backgroundColor="#161622" />
         
@@ -215,6 +215,9 @@ const BookDetails = () => {
 export default BookDetails;
 
 const styles = StyleSheet.create({
+  scrollArea: {
+    backgroundColor: '#ffffff'
+  },
   loaderContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -226,7 +229,8 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   safeArea: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#ffffff'
   },
   headerContainer: {
     flexDirection: 'row',
@@ -264,10 +268,12 @@ const styles = StyleSheet.create({
     color: '#353635',
   },
   metadataContainer: {
-    backgroundColor: '#dbdbdb',
-    borderRadius: 25,
-    marginLeft: 8,
-    marginRight: 8
+    backgroundColor: '#f2f2f2', borderRadius: 25, marginHorizontal: 8,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
   },
   metadataText: {
     fontSize: 16,
@@ -286,7 +292,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: '#ffffff',
   },
   descriptionTitle: {
     fontSize: 18,
@@ -299,6 +305,7 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     marginTop: 5,
     paddingHorizontal: 15,
+    textAlign: "justify"
   },
   buttonContainer: {
     paddingVertical: 12,

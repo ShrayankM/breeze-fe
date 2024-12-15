@@ -36,17 +36,42 @@ interface BookUserCardProps {
           <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
             {name}
           </Text>
-          <Text style={styles.author}>Author: {author}</Text>
+          {/* <Text style={styles.author}>Author: {author}</Text>
           <Text style={styles.category}>{category}</Text>
           <View style={[styles.statusCard, { backgroundColor: statusColor }]}>
             <Text style={styles.statusText}>{bookStatus}</Text>
-          </View>
+          </View> */}
+
+          <View style={styles.rowContainer}>
+            <View style={styles.authorCategoryContainer}>
+              <Text style={styles.author}>Author: {author}</Text>
+              <Text style={styles.category}>Category: {category}</Text>
+            </View>
+            
+            <View style={[styles.statusCard, { backgroundColor: statusColor }]}>
+              <Text style={styles.statusText}>{bookStatus}</Text>
+            </View>
+        </View>
+
+
         </View>
       </TouchableOpacity>
     );
   };
   
   const styles = StyleSheet.create({
+    rowContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: 4,
+      // marginHorizontal: 8,
+      // width: '100%',
+      // backgroundColor: 'red'
+    },
+    authorCategoryContainer: {
+      flexShrink: 1,
+    },
+
     card: {
       flexDirection: 'row',
       height: 94,
@@ -101,8 +126,8 @@ interface BookUserCardProps {
       height: 24,
       alignItems: 'center',
       justifyContent: 'center',
-      marginBottom: 2,
       marginHorizontal: 8,
+      marginRight: 20,
       borderRadius: 14,
       shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },

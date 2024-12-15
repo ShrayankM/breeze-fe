@@ -171,18 +171,18 @@ const BookDetails = () => {
     }
   };
 
-  const getStatusColor = (bookStatus: string) => {
-    switch (bookStatus) {
-      case 'LIBRARY':
-        return '#0571b1'; // Green for added
-      case 'COMPLETED':
-        return '#a62c13'; // Red for completed
-      case 'READING':
-        return '#e69e13'; // Yellow for reading
-      default:
-        return 'gray';
-    }
-  };
+  // const getStatusColor = (bookStatus: string) => {
+  //   switch (bookStatus) {
+  //     case 'LIBRARY':
+  //       return '#0571b1'; // Green for added
+  //     case 'COMPLETED':
+  //       return '#a62c13'; // Red for completed
+  //     case 'READING':
+  //       return '#e69e13'; // Yellow for reading
+  //     default:
+  //       return 'gray';
+  //   }
+  // };
 
   useEffect(() => {
     getBookUsingCode();
@@ -215,7 +215,7 @@ const BookDetails = () => {
   }
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.scrollArea}>
       <SafeAreaView style={styles.safeArea}>
         <StatusBar barStyle="light-content" backgroundColor="#161622" />
         
@@ -281,7 +281,7 @@ const BookDetails = () => {
                   <MaterialIcons
                     name={starNumber <= rating ? 'star' : 'star-border'}
                     size={32}
-                    color="#f5d925"
+                    color="#ffb400"
                     style={styles.star}
                   />
                 </TouchableOpacity>
@@ -294,7 +294,7 @@ const BookDetails = () => {
         {/* Description Section */}
         <View style={styles.container}>
           <View style={styles.descriptionContainer}>
-            <Text style={styles.descriptionTitle}>Description</Text>
+            <Text style={styles.descriptionTitle}>About this book</Text>
             <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
               <MaterialIcons 
                 name={isExpanded ? 'expand-less' : 'expand-more'} 
@@ -354,22 +354,32 @@ const BookDetails = () => {
 export default BookDetails;
 
 const styles = StyleSheet.create({
+  scrollArea: {
+    backgroundColor: "#ffffff"
+  },
   loaderContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffff' },
   errorText: { fontSize: 16, color: 'red' },
-  safeArea: { flex: 1 },
+  safeArea: { flex: 1, backgroundColor: "#ffffff" },
   headerContainer: { flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 15, borderBottomWidth: 0, borderBottomColor: '#e0e0e0', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4 },
   thumbnail: { width: 130, height: 180, borderRadius: 10, marginRight: 10 },
   bookInfo: { flex: 1, justifyContent: 'center' },
   bookTitle: { fontSize: 22, fontWeight: 'bold', color: '#333', marginBottom: 3 },
   bookAuthor: { fontSize: 18, color: '#353635', marginBottom: 3 },
   bookDate: { fontSize: 16, color: '#353635' },
-  metadataContainer: { backgroundColor: '#dbdbdb', borderRadius: 25, marginHorizontal: 8 },
+  metadataContainer: { 
+    backgroundColor: '#f2f2f2', borderRadius: 25, marginHorizontal: 8,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+  },
   metadataText: { fontSize: 16, color: '#555', marginVertical: 3 },
   bold: { fontWeight: 'bold' },
   container: { padding: 15 },
-  descriptionContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#f0f0f0' },
+  descriptionContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ffffff' },
   descriptionTitle: { fontSize: 18, fontWeight: 'bold', color: '#333' },
-  descriptionText: { fontSize: 16, color: '#333', lineHeight: 20, marginTop: 5, paddingHorizontal: 12 },
+  descriptionText: { fontSize: 16, color: '#333', lineHeight: 20, marginTop: 5, paddingHorizontal: 12, textAlign: "justify",},
   buttonContainer: { paddingVertical: 10, paddingHorizontal: 20, borderRadius: 25, marginHorizontal: 12, marginTop: 5, marginBottom: 10, backgroundColor: '#6200EE', elevation: 3 },
   buttonText: { fontSize: 18, fontWeight: '600', color: '#fff', textAlign: 'center' },
   tabContainer: { flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 8 },

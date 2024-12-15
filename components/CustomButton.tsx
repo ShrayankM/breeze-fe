@@ -16,7 +16,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   containerStyles,
   textStyles,
   isLoading = false,
-  color = '#6200EE', // Default background color
+  color = '#4a4949', // Default background color
 }) => {
   return (
     <TouchableOpacity

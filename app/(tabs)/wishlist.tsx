@@ -31,7 +31,7 @@ const Wishlist = () => {
     setIsLoading(true);
     try {
       const encodedQuery = encodeURIComponent(query);
-      const url = `${baseUrl}/v1/breeze/book/${encodedQuery}/user/${user.userCode}/search-books`;
+      const url = `${baseUrl}/v1/breeze/book/wishlist/${encodedQuery}/user/${user.userCode}/search-books`;
 
       const response = await fetch(url, {
         method: 'GET',
