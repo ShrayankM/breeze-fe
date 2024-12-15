@@ -10,6 +10,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { routeToScreen } from 'expo-router/build/useScreens';
+import BookStatusCard from '@/components/BookStatusCard';
 
 type Book = {
   code: string;
@@ -23,7 +24,10 @@ type Book = {
   publishedDate: string;
   description: string;
   pages: string;
-  status: string;
+  bookStatus: string;
+  language: string;
+  globalRating: number;
+  userRating: number;
 };
 
 const BookDetails = () => {
@@ -36,7 +40,7 @@ const BookDetails = () => {
   const getBookUsingCode = async () => {
     const { baseUrl } = getEnvironment();
     try {
-      const response = await fetch(`${baseUrl}/v1/breeze/book/${bookDetails.code}/get-book-details`);
+      const response = await fetch(`${baseUrl}/v1/breeze/book/${bookDetails.code}/user/${user.userCode}/get-book-details-user`);
       const jsonData = await response.json();
       setData(jsonData.data || null);
     } catch (error) {
@@ -133,6 +137,19 @@ const BookDetails = () => {
     }
   };
 
+  const getStatusColor = (bookStatus: string) => {
+    switch (bookStatus) {
+      case 'LIBRARY':
+        return '#0571b1'; // Green for added
+      case 'COMPLETED':
+        return '#a62c13'; // Red for completed
+      case 'READING':
+        return '#e69e13'; // Yellow for reading
+      default:
+        return 'gray';
+    }
+  };
+
   useEffect(() => {
     getBookUsingCode();
   }, []);
@@ -168,7 +185,12 @@ const BookDetails = () => {
           <View style={styles.bookInfo}>
             <Text style={styles.bookTitle}>{data.name}</Text>
             <Text style={styles.bookAuthor}>{data.author}</Text>
-            <Text style={styles.bookDate}>Released {data.publishedDate}</Text>
+            <Text style={styles.bookDate}> Released {data.publishedDate}</Text>
+            {/* <Text>{data.bookStatus}</Text> */}
+            {/* <BookStatusCard 
+              bookStatus={data.bookStatus}
+              statusColor={getStatusColor(data.bookStatus)}
+            /> */}
           </View>
 
           {/* <View style={[styles.statusCard]}>
@@ -180,7 +202,7 @@ const BookDetails = () => {
           <View style={styles.horizontalRow}>
             {/* Value Row */}
             <View style={styles.headingContainer}>
-              <Text style={styles.valueText}>4.2</Text>
+              <Text style={styles.valueText}>{data.globalRating ? data.globalRating : "-"}</Text>
               <Text style={styles.headingText}>Rating</Text>
             </View>
 
@@ -196,7 +218,7 @@ const BookDetails = () => {
             </View>
 
             <View style={styles.headingContainer}>
-              <Text style={styles.valueText}>EN</Text>
+              <Text style={styles.valueText}>{data.language}</Text>
               <Text style={styles.headingText}>Language</Text>
             </View>
           </View>
@@ -223,22 +245,33 @@ const BookDetails = () => {
           </Text>
         </View>
 
-        {/* Add Button */}
         <CustomButton
           title="Reading"
-          handlePress={markBookAsReading}
-          containerStyles={styles.buttonContainer}
-          textStyles={styles.buttonText}
-          color="#e69e13" // Optional: Override default color
+          handlePress={data.bookStatus === 'READING' ? () => {} : markBookAsReading} 
+          containerStyles={[
+            styles.buttonContainer,
+            data.bookStatus === 'READING' ? styles.disabledButtonContainer : styles.buttonContainer,
+          ]}
+          textStyles={[
+            styles.buttonText,
+            data.bookStatus === 'READING' ? styles.disabledButtonText : styles.buttonText,
+          ]}
+          color={data.bookStatus === 'READING' ? '#d3d3d3' : '#e69e13'}
         />
 
-        <CustomButton
+      <CustomButton
           title="Completed"
-          handlePress={markBookAsCompleted}
-          containerStyles={styles.buttonContainer}
-          textStyles={styles.buttonText}
-          color="#a62c13" // Optional: Override default color
-        />
+          handlePress={data.bookStatus === 'COMPLETED' ? () => {} : markBookAsCompleted}
+          containerStyles={[
+            styles.buttonContainer,
+            data.bookStatus === 'READING' ? styles.disabledButtonContainer : styles.buttonContainer,
+          ]}
+          textStyles={[
+            styles.buttonText,
+            data.bookStatus === 'COMPLETED' ? styles.disabledButtonText : styles.buttonText,
+          ]}
+          color={data.bookStatus === 'COMPLETED' ? '#d3d3d3' : '#a62c13'}
+      />
 
       <CustomButton
           title="Delete From Library"
@@ -421,6 +454,12 @@ const styles = StyleSheet.create({
       shadowOpacity: 0.2,
       shadowRadius: 3,
       elevation: 3,
+  },
+  disabledButtonContainer: {
+    backgroundColor: '#d3d3d3', // Light gray to indicate disabled state
+  },
+  disabledButtonText: {
+    color: '#a9a9a9', // Dark gray for text when disabled
   },
   
   
