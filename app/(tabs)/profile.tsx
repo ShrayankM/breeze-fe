@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     width: 100, // Slightly smaller
     height: 100,
     borderRadius: 50,
-    backgroundColor: '#D3D3D3',
+    backgroundColor: '#d9f095',
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
   profileInitials: {
     fontSize: 32, // Slightly smaller font size
     fontWeight: 'bold',
-    color: '#FFF',
+    color: '#000000',
   },
   header: {
     alignItems: 'center',

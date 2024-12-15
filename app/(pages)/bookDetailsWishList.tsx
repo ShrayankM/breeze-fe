@@ -22,6 +22,9 @@ type Book = {
   publishedDate: string;
   description: string;
   pages: string;
+  language: string;
+  globalRating: number;
+  userRating: number;
 };
 
 const BookDetails = () => {
@@ -34,7 +37,7 @@ const BookDetails = () => {
   const getBookUsingCode = async () => {
     const { baseUrl } = getEnvironment();
     try {
-      const response = await fetch(`${baseUrl}/v1/breeze/book/${bookDetails.code}/get-book-details`);
+      const response = await fetch(`${baseUrl}/v1/breeze/book/${bookDetails.code}/user/${user.userCode}/get-book-details-user`);
       const jsonData = await response.json();
       setData(jsonData.data || null);
     } catch (error) {
@@ -145,7 +148,7 @@ const BookDetails = () => {
           <View style={styles.horizontalRow}>
             {/* Value Row */}
             <View style={styles.headingContainer}>
-              <Text style={styles.valueText}>4.2</Text>
+              <Text style={styles.valueText}>{data.globalRating ? data.globalRating : "-"}</Text>
               <Text style={styles.headingText}>Rating</Text>
             </View>
 
@@ -161,7 +164,7 @@ const BookDetails = () => {
             </View>
 
             <View style={styles.headingContainer}>
-              <Text style={styles.valueText}>EN</Text>
+              <Text style={styles.valueText}>{data.language ? data.language : "-"}</Text>
               <Text style={styles.headingText}>Language</Text>
             </View>
           </View>
