@@ -37,11 +37,12 @@ const BookDetails = () => {
   const [data, setData] = useState<Book | null>(null);
   const [isExpanded, setIsExpanded] = useState(false); 
   const bookDetails = useLocalSearchParams();
-  const [rating, setRating] = useState<number>(0);
+  const [userRating, setUserRating] = useState<number>(0);
+  const [globalRating, setGlobalRating] = useState<number>(0);
 
   const handleRatingPress = async (star: number) => {
     const { baseUrl } = getEnvironment();
-    setRating(star);
+    setUserRating(star);
 
     const requestBody = {
       rating: star,
@@ -171,32 +172,25 @@ const BookDetails = () => {
     }
   };
 
-  // const getStatusColor = (bookStatus: string) => {
-  //   switch (bookStatus) {
-  //     case 'LIBRARY':
-  //       return '#0571b1'; // Green for added
-  //     case 'COMPLETED':
-  //       return '#a62c13'; // Red for completed
-  //     case 'READING':
-  //       return '#e69e13'; // Yellow for reading
-  //     default:
-  //       return 'gray';
-  //   }
-  // };
-
   useEffect(() => {
     getBookUsingCode();
   }, []);
 
   useEffect(() => {
-    if (rating === 0) {
-      if (bookDetails?.userRating) {
-        setRating(Number(bookDetails.userRating));
-      } else if (data?.globalRating) {
-        setRating(data.globalRating);
+    if (userRating === 0) {
+      if (data?.userRating) {
+        setUserRating(Number(data.userRating));
+      } else {
+        setUserRating(0);
+      }
+      
+      if (data?.globalRating) {
+        setGlobalRating(data.globalRating);
+      } else {
+        setGlobalRating(0);
       }
     }
-  }, [bookDetails, data, rating]);
+  }, [bookDetails, data, userRating, globalRating]);
 
   if (isLoading) {
     return (
@@ -279,7 +273,7 @@ const BookDetails = () => {
                   onPress={() => handleRatingPress(starNumber)}
                 >
                   <MaterialIcons
-                    name={starNumber <= rating ? 'star' : 'star-border'}
+                    name={starNumber <= userRating ? 'star' : 'star-border'}
                     size={32}
                     color="#ffb400"
                     style={styles.star}
@@ -359,7 +353,7 @@ const styles = StyleSheet.create({
   },
   loaderContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffff' },
   errorText: { fontSize: 16, color: 'red' },
-  safeArea: { flex: 1, backgroundColor: "#ffffff" },
+  safeArea: { flex: 1, backgroundColor: "#ffffff", marginTop: 4 },
   headerContainer: { flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 15, borderBottomWidth: 0, borderBottomColor: '#e0e0e0', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4 },
   thumbnail: { width: 130, height: 180, borderRadius: 10, marginRight: 10 },
   bookInfo: { flex: 1, justifyContent: 'center' },

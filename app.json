@@ -6,7 +6,9 @@
     "orientation": "portrait",
     "scheme": "breeze",
     "userInterfaceStyle": "automatic",
+    "icon": "./assets/images/wind.png",
     "splash": {
+      "image": "./assets/images/wind.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -16,6 +18,7 @@
     },
     "android": {
       "adaptiveIcon": {
+        "foregroundImage": "./assets/images/wind.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
@@ -25,13 +28,22 @@
     },
     "web": {
       "bundler": "metro",
-      "output": "static"
+      "output": "static",
+      "favicon": "./assets/images/wind.png"
     },
     "plugins": [
       "expo-router"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "4601c3a6-8c1e-4ea2-a828-7b7ff3866d5b"
+      }
     }
   }
 }

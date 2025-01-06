@@ -2,6 +2,7 @@ import { StyleSheet, View, Text, Image } from 'react-native';
 import React from 'react';
 import { Tabs } from 'expo-router';
 import icons from '../../constants/icons';
+import { StatusBar } from 'expo-status-bar'
 
 interface TabIconProps {
   icon: any,
@@ -25,6 +26,8 @@ const TabIcon: React.FC<TabIconProps> = ({icon, color, name, focused}) => {
           >
           {name}
           </Text>
+
+          <StatusBar backgroundColor="#161622" style="light" />
       </View>
   )
 }
