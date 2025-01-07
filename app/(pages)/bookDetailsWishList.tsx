@@ -153,7 +153,7 @@ const BookDetails = () => {
             </View>
 
             <View style={styles.headingContainer}>
-              <Text style={[styles.valueText, styles.categoryText]}>{data.category}</Text>
+              <Text style={[styles.valueText, styles.categoryText]} numberOfLines={1} ellipsizeMode="tail">{data.category}</Text>
               <Text style={styles.headingText}>Category</Text>
             </View>
 
@@ -170,11 +170,32 @@ const BookDetails = () => {
           </View>
         </View>
 
+        {/** Button section */}
+        <View style={styles.horizontalRowButtons}>
+        <CustomButton
+          title="Add to Library"
+          handlePress={addToLibrary}
+          containerStyles={styles.buttonContainer}
+          textStyles={styles.buttonText}
+          color="#0571b1" // Optional: Override default color
+        />
+
+      <CustomButton
+          title="Remove"
+          handlePress={markAsDeleted}
+          containerStyles={styles.buttonContainer}
+          textStyles={styles.buttonText}
+          color="#c80900" // Optional: Override default color
+      />
+        </View>
+
+
+        <View style={styles.horizontalLine} />
 
         {/* Description Section */}
         <View style={styles.container}>
           <View style={styles.descriptionContainer}>
-            <Text style={styles.descriptionTitle}>Description</Text>
+            <Text style={styles.descriptionTitle}>About this ebook</Text>
             <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
               <MaterialIcons 
                 name={isExpanded ? 'expand-less' : 'expand-more'} 
@@ -191,22 +212,10 @@ const BookDetails = () => {
           </Text>
         </View>
 
-        {/* Add Button */}
-        <CustomButton
-          title="Add to Library"
-          handlePress={addToLibrary}
-          containerStyles={styles.buttonContainer}
-          textStyles={styles.buttonText}
-          color="#0571b1" // Optional: Override default color
-        />
+        <View style={styles.horizontalLineBottom} />
 
-      <CustomButton
-          title="Delete From Wishlist"
-          handlePress={markAsDeleted}
-          containerStyles={styles.buttonContainer}
-          textStyles={styles.buttonText}
-          color="#000000" // Optional: Override default color
-      />
+        {/* Add Button */}
+        
       </SafeAreaView>
     </ScrollView>
   );
@@ -234,7 +243,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flexDirection: 'row',
-    padding: 15,
+    padding: 40,
     borderBottomWidth: 0,
     borderBottomColor: '#e0e0e0',
     shadowColor: '#000',
@@ -243,9 +252,8 @@ const styles = StyleSheet.create({
     shadowRadius: 4
   },
   thumbnail: {
-    width: 130,
-    height: 180,
-    borderRadius: 10,
+    width: 110,
+    height: 150,
     marginRight: 15,
   },
   bookInfo: {
@@ -253,30 +261,34 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   bookTitle: {
-    fontSize: 22,
+    fontSize: 25,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 5,
   },
   bookAuthor: {
-    fontSize: 18,
+    fontSize: 14,
     color: '#353635',
     marginBottom: 5,
+    textDecorationLine: "underline"
   },
   bookDate: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#353635',
   },
   metadataContainer: {
-    backgroundColor: '#f2f2f2', borderRadius: 25, marginHorizontal: 8,
+    backgroundColor: '#f2f2f2', 
+    borderRadius: 30, 
+    marginHorizontal: 20,
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 10,
+    marginTop: -20
   },
   metadataText: {
-    fontSize: 16,
+    fontSize: 12,
     color: '#555',
     marginVertical: 5,
   },
@@ -284,15 +296,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   container: {
-    padding: 20
+    padding: 40,
+    // backgroundColor: "green"
+    marginTop: -30
   },
   descriptionContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ffffff',
   },
   descriptionTitle: {
     fontSize: 18,
@@ -300,28 +311,36 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   descriptionText: {
-    fontSize: 16,
+    fontSize: 15,
     color: '#333',
     lineHeight: 22,
-    marginTop: 5,
-    paddingHorizontal: 15,
-    textAlign: "justify"
+    marginTop: 10,
+    // paddingHorizontal: 15,
+    textAlign: "justify",
   },
   buttonContainer: {
-    paddingVertical: 12,
-    paddingHorizontal: 25,
-    borderRadius: 25,
-    marginHorizontal: 15,
-    marginTop: 5,
-    marginBottom: 15,
-    backgroundColor: '#6200EE',
-    elevation: 4,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 30,
+    marginHorizontal: 10,
+    marginTop: 10,
+    marginBottom: 4,
+    backgroundColor: '#fff',
+    elevation: 2,
+    width: 145,
+    height: 45,
   },
   buttonText: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: 15,
+    fontWeight: '500',
     color: '#fff',
     textAlign: 'center',
+  },
+  horizontalRowButtons: {
+    flexDirection: 'row', // Aligns both value and heading rows horizontally
+    justifyContent: "center",
+    alignItems: 'center', // Aligns items in the center vertically
+    marginVertical: 10, // Adjust vertical spacing
   },
   tabContainer: {
     flexDirection: 'row', // Ensures items are side by side
@@ -341,15 +360,8 @@ const styles = StyleSheet.create({
     alignItems: 'center', // Aligns items in the center vertically
     marginVertical: 10, // Adjust vertical spacing
   },
-  
-  valueContainer: {
-    flexDirection: 'column', // Stack the values vertically
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  
   valueText: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: 'bold',
     color: '#000000', // Custom color for the value
     marginBottom: 5, // Adjust spacing between values
@@ -360,21 +372,35 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
-    maxWidth: 150,
   },
   
   headingText: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: 'normal',
-    color: '#000000',
+    color: '#000000'
   },
 
   categoryText: {
     flexWrap: 'wrap', // Allow text to wrap to the next line
     textAlign: 'center', // Center align the text
     maxWidth: 120, // Optional: Limit max width for better wrapping
-    fontSize: 18,
-  }
+    fontSize: 15,
+  },
+
+  horizontalLine: {
+    borderBottomColor: '#ccc', // Line color
+    borderBottomWidth: 1,      // Line thickness
+    marginVertical: 10,        // Space above and below the line
+    marginHorizontal: 20
+  },
+
+  horizontalLineBottom: {
+    borderBottomColor: '#ccc', // Line color
+    borderBottomWidth: 1,      // Line thickness
+    marginVertical: 10,        // Space above and below the line
+    marginHorizontal: 20,
+    marginTop: -15
+  },
   
   
 });

@@ -223,7 +223,7 @@ const BookDetails = () => {
           <View style={styles.bookInfo}>
             <Text style={styles.bookTitle}>{data.name}</Text>
             <Text style={styles.bookAuthor}>{data.author}</Text>
-            <Text style={styles.bookDate}> Released {data.publishedDate}</Text>
+            <Text style={styles.bookDate}>Released {data.publishedDate}</Text>
             {/* <Text>{data.bookStatus}</Text> */}
             {/* <BookStatusCard 
               bookStatus={data.bookStatus}
@@ -245,7 +245,7 @@ const BookDetails = () => {
             </View>
 
             <View style={styles.headingContainer}>
-              <Text style={[styles.valueText, styles.categoryText]}>{data.category}</Text>
+              <Text style={[styles.valueText, styles.categoryText]} numberOfLines={1} ellipsizeMode="tail">{data.category}</Text>
               <Text style={styles.headingText}>Category</Text>
             </View>
 
@@ -262,7 +262,7 @@ const BookDetails = () => {
           </View>
         </View>
 
-        <View style={[styles.container, styles.ratingContainer]}>
+        {/* <View style={[styles.container, styles.ratingContainer]}>
           <Text style={styles.ratingLabel}>Rating</Text>
           <View style={styles.starsRow}>
             {Array.from({ length: 5 }, (_, index) => {
@@ -282,30 +282,11 @@ const BookDetails = () => {
               );
             })}
         </View>
-      </View>
+      </View> */}
 
 
-        {/* Description Section */}
-        <View style={styles.container}>
-          <View style={styles.descriptionContainer}>
-            <Text style={styles.descriptionTitle}>About this book</Text>
-            <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
-              <MaterialIcons 
-                name={isExpanded ? 'expand-less' : 'expand-more'} 
-                size={24} 
-                color="#095482" 
-              />
-            </TouchableOpacity>
-          </View>
-          <Text 
-            style={styles.descriptionText}
-            numberOfLines={isExpanded ? undefined : 5}
-          >
-            {data.description}
-          </Text>
-        </View>
-
-        <CustomButton
+      <View style={styles.horizontalRowButtons}>
+      <CustomButton
           title="Reading"
           handlePress={data.bookStatus === 'READING' ? () => {} : markBookAsReading} 
           containerStyles={[
@@ -332,11 +313,67 @@ const BookDetails = () => {
           ]}
           color={data.bookStatus === 'COMPLETED' ? '#d3d3d3' : '#a62c13'}
       />
+      </View>
+
+
+      <View style={styles.horizontalLine} />
+
+
+        {/* Description Section */}
+        <View style={styles.container}>
+          <View style={styles.descriptionContainer}>
+            <Text style={styles.descriptionTitle}>About this ebook</Text>
+            <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
+              <MaterialIcons 
+                name={isExpanded ? 'expand-less' : 'expand-more'} 
+                size={24} 
+                color="#095482" 
+              />
+            </TouchableOpacity>
+          </View>
+          <Text 
+            style={styles.descriptionText}
+            numberOfLines={isExpanded ? undefined : 5}
+          >
+            {data.description}
+          </Text>
+        </View>
+
+        <View style={styles.horizontalLineBottom} />
+
+        {/** Rating Section */}
+        <View style={styles.container}>
+          <View style={styles.descriptionContainer}>
+              <Text style={styles.descriptionTitle}>Rate this ebook</Text>
+            </View>
+            <View style={[styles.container, styles.ratingContainer]}>
+            <View style={styles.starsRow}>
+            {Array.from({ length: 5 }, (_, index) => {
+              const starNumber = index + 1;
+              return (
+                <TouchableOpacity
+                  key={starNumber}
+                  onPress={() => handleRatingPress(starNumber)}
+                >
+                  <MaterialIcons
+                    name={starNumber <= userRating ? 'star' : 'star-border'}
+                    size={32}
+                    color="#ffb400"
+                    style={styles.star}
+                  />
+                </TouchableOpacity>
+              );
+            })}
+            </View>
+          </View>
+        </View>
+
+        
 
       <CustomButton
           title="Delete From Library"
           handlePress={markAsDeleted}
-          containerStyles={styles.buttonContainer}
+          containerStyles={styles.buttonContainerDeleted}
           textStyles={styles.buttonText}
           color="#000000" // Optional: Override default color
       />
@@ -354,43 +391,134 @@ const styles = StyleSheet.create({
   loaderContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffff' },
   errorText: { fontSize: 16, color: 'red' },
   safeArea: { flex: 1, backgroundColor: "#ffffff", marginTop: 4 },
-  headerContainer: { flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 15, borderBottomWidth: 0, borderBottomColor: '#e0e0e0', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4 },
-  thumbnail: { width: 130, height: 180, borderRadius: 10, marginRight: 10 },
+  headerContainer: 
+  { 
+    flexDirection: 'row',
+    padding: 40,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  thumbnail: {
+    width: 110,
+    height: 150,
+    marginRight: 15,
+  },
   bookInfo: { flex: 1, justifyContent: 'center' },
-  bookTitle: { fontSize: 22, fontWeight: 'bold', color: '#333', marginBottom: 3 },
-  bookAuthor: { fontSize: 18, color: '#353635', marginBottom: 3 },
-  bookDate: { fontSize: 16, color: '#353635' },
-  metadataContainer: { 
-    backgroundColor: '#f2f2f2', borderRadius: 25, marginHorizontal: 8,
+  bookTitle: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 5,
+  },
+  bookAuthor: {
+    fontSize: 14,
+    color: '#353635',
+    marginBottom: 5,
+    textDecorationLine: "underline"
+  },
+  bookDate: {
+    fontSize: 14,
+    color: '#353635',
+  },
+  metadataContainer: {
+    backgroundColor: '#f2f2f2', 
+    borderRadius: 30, 
+    marginHorizontal: 20,
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 10,
+    marginTop: -20
   },
-  metadataText: { fontSize: 16, color: '#555', marginVertical: 3 },
+  metadataText: {
+    fontSize: 12,
+    color: '#555',
+    marginVertical: 5,
+  },
   bold: { fontWeight: 'bold' },
-  container: { padding: 15 },
-  descriptionContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ffffff' },
-  descriptionTitle: { fontSize: 18, fontWeight: 'bold', color: '#333' },
-  descriptionText: { fontSize: 16, color: '#333', lineHeight: 20, marginTop: 5, paddingHorizontal: 12, textAlign: "justify",},
-  buttonContainer: { paddingVertical: 10, paddingHorizontal: 20, borderRadius: 25, marginHorizontal: 12, marginTop: 5, marginBottom: 10, backgroundColor: '#6200EE', elevation: 3 },
-  buttonText: { fontSize: 18, fontWeight: '600', color: '#fff', textAlign: 'center' },
+  container: {
+    padding: 40,
+    // backgroundColor: "green"
+    marginTop: -30
+  },
+  descriptionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  descriptionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  descriptionText: {
+    fontSize: 15,
+    color: '#333',
+    lineHeight: 22,
+    marginTop: 10,
+    // paddingHorizontal: 15,
+    textAlign: "justify",
+  },
+  buttonContainer: {
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 30,
+    marginHorizontal: 10,
+    marginTop: 10,
+    marginBottom: 4,
+    backgroundColor: '#fff',
+    elevation: 2,
+    width: 145,
+    height: 45,
+  },
+  buttonText: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#fff',
+    textAlign: 'center',
+  },
+  buttonContainerDeleted: {
+    padding: 40, borderRadius: 25, marginHorizontal: 20, marginTop: -55, marginBottom: 10, backgroundColor: '#6200EE', elevation: 3 ,
+  },
   tabContainer: { flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 8 },
   statusText: { fontSize: 10, color: '#000000', fontWeight: 'bold' },
   horizontalRow: { flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginVertical: 8 },
   valueContainer: { flexDirection: 'column', justifyContent: 'center', alignItems: 'center' },
-  valueText: { fontSize: 18, fontWeight: 'bold', color: '#000000', marginBottom: 4 },
+  valueText: { fontSize: 15, fontWeight: 'bold', color: '#000000', marginBottom: 4 },
   headingContainer: { flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 8, maxWidth: 150 },
-  headingText: { fontSize: 14, fontWeight: 'normal', color: '#000000' },
-  categoryText: { flexWrap: 'wrap', textAlign: 'center', maxWidth: 120, fontSize: 18 },
+  headingText: { fontSize: 13, fontWeight: 'normal', color: '#000000' },  categoryText: { flexWrap: 'wrap', textAlign: 'center', maxWidth: 120, fontSize: 15 },
   statusCard: { width: 80, height: 24, alignItems: 'center', justifyContent: 'center', marginBottom: 2, marginHorizontal: 6, borderRadius: 14, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 3, elevation: 3 },
   disabledButtonContainer: { backgroundColor: '#d3d3d3' },
   disabledButtonText: { color: '#a9a9a9' },
   starContainer: { padding: 2 },
   star: { marginHorizontal: 5 },
   ratingContainer: { alignItems: 'flex-start' },
-  ratingLabel: { fontSize: 18, fontWeight: 'bold', marginBottom: 8, color: '#333' },
-  starsRow: { flexDirection: 'row', justifyContent: 'space-between', width: '100%' }
+  ratingLabel: { fontSize: 18, fontWeight: 'bold', color: '#333' },
+  starsRow: { flexDirection: 'row', justifyContent: 'space-between', width: '100%' },
+
+  horizontalLine: {
+    borderBottomColor: '#ccc', // Line color
+    borderBottomWidth: 1,      // Line thickness
+    marginVertical: 10,        // Space above and below the line
+    marginHorizontal: 20
+  },
+
+  horizontalLineBottom: {
+    borderBottomColor: '#ccc', // Line color
+    borderBottomWidth: 1,      // Line thickness
+    marginVertical: 10,        // Space above and below the line
+    marginHorizontal: 20,
+    marginTop: -15
+  },
+
+  horizontalRowButtons: {
+    flexDirection: 'row', // Aligns both value and heading rows horizontally
+    justifyContent: "center",
+    alignItems: 'center', // Aligns items in the center vertically
+    marginVertical: 10, // Adjust vertical spacing
+  },
 });
 

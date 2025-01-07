@@ -15,6 +15,7 @@ type UserData = {
   completedBookCount: number;
   wishlistedBookCount: number;
   totalBooksInLibrary: number;
+  totalBooksInSystem: number;
 };
 
 const Profile = () => {
@@ -65,7 +66,7 @@ const Profile = () => {
     );
   }
 
-  const { readingBookCount, completedBookCount, wishlistedBookCount, totalBooksInLibrary } = userInfo;
+  const { readingBookCount, completedBookCount, wishlistedBookCount, totalBooksInLibrary, totalBooksInSystem } = userInfo;
 
   const stats = [
     {
@@ -83,13 +84,13 @@ const Profile = () => {
     {
       label: 'Wishlisted',
       count: wishlistedBookCount,
-      total: totalBooksInLibrary + wishlistedBookCount,
+      total: wishlistedBookCount,
       color: '#90EE90',
     },
     {
       label: 'In Library',
       count: totalBooksInLibrary,
-      total: totalBooksInLibrary + wishlistedBookCount,
+      total: totalBooksInLibrary,
       color: '#FFD700',
     },
   ];
@@ -107,39 +108,114 @@ const Profile = () => {
         <Text style={styles.email}>{userInfo.emailAddress}</Text>
       </View>
 
+      <View style={styles.horizontalLine} />
+
       {/* Book Stats with Gradients */}
-      <View style={styles.statsContainer}>
-        {stats.map((stat, index) => (
+      <View style={styles.horizontalRowButtons}>
+        <View style={styles.readingContainer}>
+          {/* <View style={styles.statTextContainer}>
+            <Text style={styles.statLabel}>Reading</Text>
+            <Text style={styles.statNumber}>{readingBookCount}</Text>
+                  
+          </View> */}
+
+
           <LinearGradient
-            key={index}
-            colors={[stat.color, 'transparent']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: Math.min(Number(calculatePercentage(stat.count, stat.total)) / 100, 1), y: 0 }}
-            style={styles.statCard}
-          >
-            <View style={styles.statContent}>
+              colors={['#fefcc9', '#fef756']}
+              style={styles.readingContainer}>
+
               <View style={styles.statTextContainer}>
-                <Text style={styles.statNumber}>{`${calculatePercentage(stat.count, stat.total)}%`}</Text>
-                <Text style={styles.statLabel}>{stat.label}</Text>
+                <Text style={styles.statLabel}>Reading</Text>
+                <Text style={styles.statNumber}>{readingBookCount}</Text>
+                <Text style={styles.statPercentage}>{`${calculatePercentage(readingBookCount, totalBooksInLibrary)}%`}</Text>
+                      
               </View>
-              {/* <Text style={styles.statLabel}>{stat.label}</Text> */}
-              <Text style={styles.statCount}>{`${stat.count}`}</Text>
-            </View>
           </LinearGradient>
-        ))}
+        </View>
+
+        <View style={styles.overallStatContainer}>
+        <LinearGradient
+              colors={['#fee7c9', '#feb14a']}
+              style={styles.overallStatContainer}>
+
+              <View style={styles.statTextContainerLibrary}>
+                <Text style={styles.statLabel}>Overall</Text>
+                <Text style={styles.statNumber}>{totalBooksInLibrary}/{totalBooksInSystem}</Text>
+                <Text style={styles.statPercentageOverall}>{`${calculatePercentage(totalBooksInLibrary, totalBooksInSystem)}%`}</Text>
+                      
+              </View>
+          </LinearGradient>
+        </View>
+
+        <View style={styles.completedContainer}>
+        <LinearGradient
+              colors={['#fdbbe3', '#fd78c8']}
+              style={styles.completedContainer}>
+
+              <View style={styles.statTextContainer}>
+                <Text style={styles.statLabel}>Completed</Text>
+                <Text style={styles.statNumber}>{completedBookCount}</Text>
+                <Text style={styles.statPercentage}>{`${calculatePercentage(completedBookCount, totalBooksInLibrary)}%`}</Text>
+                      
+              </View>
+          </LinearGradient>
+        </View>
       </View>
 
 
+      <View style={styles.horizontalRowButtonsLower}>
+
+        <View style={styles.wishlistedContainer}>
+        <LinearGradient
+              colors={['#d4fdce', '#82fd6e']}
+              style={styles.wishlistedContainer}>
+
+              <View style={styles.statTextContainer}>
+                <Text style={styles.statLabel}>Wishlisted</Text>
+                <Text style={styles.statNumber}>{wishlistedBookCount}</Text>
+                {/* <Text style={styles.statPercentage}>{`${calculatePercentage(completedBookCount, totalBooksInLibrary)}%`}</Text> */}
+                      
+              </View>
+          </LinearGradient>
+        </View>
+
+        <View style={styles.libraryContainer}>
+        <LinearGradient
+              colors={['#cbfefe', '#6efbfd']}
+              style={styles.libraryContainer}>
+
+              <View style={styles.statTextContainer}>
+                <Text style={styles.statLabel}>Library</Text>
+                {/* <Text style={styles.statNumber}>{`${calculatePercentage(readingBookCount, totalBooksInLibrary)}%`}</Text> */}
+                <Text style={styles.statNumberLibrary}>{totalBooksInLibrary}</Text>
+                      
+              </View>
+          </LinearGradient>
+        </View>
+
+           
+      </View>
+
+      {/* <View style={styles.horizontalLineBottom} /> */}
+
       {/* Logout Button */}
-      <View style={styles.logoutContainer}>
+      {/* <View style={styles.logoutContainer}> */}
         <CustomButton
           title="Logout"
           handlePress={logout}
           containerStyles={styles.buttonContainer}
           textStyles={styles.buttonText}
-          color="#57161f"
+          color="#aa003c"
         />
-      </View>
+      {/* </View> */}
+
+      {/* <CustomButton
+          title="Delete From Library"
+          handlePress={markAsDeleted}
+          containerStyles={styles.buttonContainerDeleted}
+          textStyles={styles.buttonText}
+          color="#000000" // Optional: Override default color
+      /> */}
     </SafeAreaView>
   );
 };
@@ -147,6 +223,100 @@ const Profile = () => {
 export default Profile;
 
 const styles = StyleSheet.create({
+
+  horizontalLine: {
+    borderBottomColor: '#ccc', // Line color
+    borderBottomWidth: 1,      // Line thickness
+    marginVertical: 10,        // Space above and below the line
+    marginHorizontal: 20,
+    marginTop: -10
+  },
+
+  horizontalLineBottom: {
+    borderBottomColor: '#ccc', // Line color
+    borderBottomWidth: 1,      // Line thickness
+    marginVertical: 10,        // Space above and below the line
+    marginHorizontal: 20,
+    marginTop: 10
+  },
+
+  readingContainer: {
+    width: 100,
+    height: 110,
+    borderRadius: 15, // Softer rounded corners
+    overflow: 'hidden', // Prevent content from overflowing
+    elevation: 5, // Stronger elevation for a modern shadow effect
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+},
+
+
+  libraryContainer: {
+    width: 100,
+    height: 110,
+    borderRadius: 15, // Softer rounded corners
+    overflow: 'hidden', // Prevent content from overflowing
+    elevation: 5, // Stronger elevation for a modern shadow effect
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+  },
+
+  completedContainer: {
+    width: 100,
+    height: 110,
+    borderRadius: 15, // Softer rounded corners
+    overflow: 'hidden', // Prevent content from overflowing
+    elevation: 5, // Stronger elevation for a modern shadow effect
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+  },
+
+  horizontalRowButtons: {
+    flexDirection: 'row', // Aligns both value and heading rows horizontally
+    justifyContent: "space-between",
+    alignItems: 'center', // Aligns items in the center vertically
+    marginVertical: 5, // Adjust vertical spacing
+  },
+
+  horizontalRowButtonsLower: {
+    flexDirection: 'row', // Aligns both value and heading rows horizontally
+    justifyContent: "space-evenly",
+    alignItems: 'center', // Aligns items in the center vertically
+    marginVertical: 5, // Adjust vertical spacing
+    marginTop: 10
+  },
+
+  wishlistedContainer: {
+    width: 100,
+    height: 110,
+    borderRadius: 15, // Softer rounded corners
+    overflow: 'hidden', // Prevent content from overflowing
+    elevation: 5, // Stronger elevation for a modern shadow effect
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    marginRight: -40
+  },
+
+  overallStatContainer: {
+    width: 120,
+    height: 130,
+    borderRadius: 15, // Softer rounded corners
+    overflow: 'hidden', // Prevent content from overflowing
+    elevation: 5, // Stronger elevation for a modern shadow effect
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+  },
+
   statCard: {
     width: '100%',
     borderRadius: 10,
@@ -165,9 +335,14 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   statTextContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8, // Space between percentage and label
+    flexDirection: 'column',
+    alignItems: "center",
+    marginTop: 15
+  },
+  statTextContainerLibrary: {
+    flexDirection: 'column',
+    alignItems: "center",
+    marginTop: 20
   },
   container: {
     flex: 1,
@@ -175,10 +350,10 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   profileImageContainer: {
-    width: 100,
-    height: 100,
+    width: 110,
+    height: 110,
     borderRadius: 50,
-    backgroundColor: '#d9f095',
+    backgroundColor: '#d6ff5a',
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
@@ -195,13 +370,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   userName: {
-    fontSize: 24,
+    fontSize: 30,
+    marginTop: -10,
     fontWeight: 'bold',
     color: '#333',
   },
   email: {
-    fontSize: 14,
-    color: '#777',
+    fontSize: 16,
+    color: '#5f5b5b',
   },
   statsContainer: {
     flex: 1,
@@ -219,19 +395,40 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   statNumber: {
-    fontSize: 22,
+    fontSize: 30,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#000',
+    // marginBottom: 5,
+  },
+  statNumberLibrary: {
+    fontSize: 35,
+    fontWeight: 'bold',
+    color: '#000',
+    marginTop: -5
+    // marginBottom: 5,
+  },
+  statPercentage: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#000',
     marginBottom: 5,
+  },
+  statPercentageOverall: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#000',
+    marginBottom: 5,
+    marginTop: 5
   },
   statLabel: {
     fontSize: 16,
-    color: '#555',
-    marginBottom: 5,
-    fontStyle: "italic"
+    color: '#000',
+    fontWeight: 'bold',
+    marginBottom: 3,
+    textAlign: "center"
   },
   statCount: {
-    fontSize: 20,
+    fontSize: 30,
     color: '#333',
     fontWeight: "bold",
     marginRight: 15,
@@ -246,13 +443,13 @@ const styles = StyleSheet.create({
     color: '#FFF',
   },
   buttonContainer: {
-    paddingVertical: 12,
-    paddingHorizontal: 25,
+    padding: 40,
     borderRadius: 25,
-    marginHorizontal: 15,
+    marginHorizontal: 20,
     backgroundColor: '#520914',
-    elevation: 4,
-    width: '100%',
+    elevation: 3,
+    marginTop: 20,
+    marginBottom: 10,
   },
   noDataContainer: {
     flex: 1,
