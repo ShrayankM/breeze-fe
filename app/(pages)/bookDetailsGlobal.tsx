@@ -185,6 +185,25 @@ const BookDetails = () => {
           </View>
         </View>
 
+        <View style={styles.horizontalRowButtons}>
+          {/* Add Button */}
+        <CustomButton
+          title="Add to Library"
+          handlePress={handlePostRequest}
+          containerStyles={styles.buttonContainer}
+          textStyles={styles.buttonTextLibrary}
+          // color="#0571b1" // Optional: Override default color
+        />
+
+        <CustomButton
+          title="Add to Wishlist"
+          handlePress={addBookToWishList}
+          containerStyles={styles.buttonContainer}
+          textStyles={styles.buttonTextWishlist}
+          // color="#45a100" // Optional: Override default color
+        />
+        </View>
+
         {/* Description Section */}
         <View style={styles.container}>
           <View style={styles.descriptionContainer}>
@@ -204,23 +223,6 @@ const BookDetails = () => {
             {data.description}
           </Text>
         </View>
-
-        {/* Add Button */}
-        <CustomButton
-          title="Add to Library"
-          handlePress={handlePostRequest}
-          containerStyles={styles.buttonContainer}
-          textStyles={styles.buttonText}
-          color="#0571b1" // Optional: Override default color
-        />
-
-        <CustomButton
-          title="Add to Wishlist"
-          handlePress={addBookToWishList}
-          containerStyles={styles.buttonContainer}
-          textStyles={styles.buttonText}
-          color="#45a613" // Optional: Override default color
-      />
       </SafeAreaView>
     </ScrollView>
   );
@@ -320,19 +322,33 @@ const styles = StyleSheet.create({
     textAlign: "justify"
   },
   buttonContainer: {
-    paddingVertical: 12,
-    paddingHorizontal: 25,
-    borderRadius: 25,
-    marginHorizontal: 15,
-    marginTop: 20,
-    marginBottom: 15,
-    backgroundColor: '#6200EE',
-    elevation: 4,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    marginHorizontal: 10,
+    marginTop: 10,
+    marginBottom: 4,
+    backgroundColor: '#fff',
+    elevation: 2,
+    borderColor: "#808080",
+    borderWidth: 2
   },
   buttonText: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: '300',
     color: '#fff',
+    textAlign: 'center',
+  },
+  buttonTextLibrary: {
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#0571b1',
+    textAlign: 'center',
+  },
+  buttonTextWishlist: {
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#45a900',
     textAlign: 'center',
   },
   statusText: {
@@ -344,6 +360,13 @@ const styles = StyleSheet.create({
   horizontalRow: {
     flexDirection: 'row', // Aligns both value and heading rows horizontally
     justifyContent: 'space-around', // Distributes space between items
+    alignItems: 'center', // Aligns items in the center vertically
+    marginVertical: 10, // Adjust vertical spacing
+  },
+
+  horizontalRowButtons: {
+    flexDirection: 'row', // Aligns both value and heading rows horizontally
+    justifyContent: "center",
     alignItems: 'center', // Aligns items in the center vertically
     marginVertical: 10, // Adjust vertical spacing
   },
