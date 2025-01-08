@@ -61,7 +61,7 @@ const UserBooks = () => {
         },
         body: JSON.stringify({
           userCode: user.userCode,
-          bookStatusList: ['ADDED', 'READING', 'COMPLETED', 'LIBRARY'],
+          bookStatusList: ['READING', 'COMPLETED', 'LIBRARY'],
           limit: 2,
           offset: 0,
         }),
