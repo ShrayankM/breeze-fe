@@ -6,19 +6,18 @@
     "orientation": "portrait",
     "scheme": "breeze",
     "userInterfaceStyle": "automatic",
-    "icon": "./assets/images/wind.png",
+    "icon": "./assets/images/wind-icon-cropped.png",
     "splash": {
       "image": "./assets/images/wind.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true,
-      "package": "com.breeze"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/wind.png",
+        "foregroundImage": "./assets/images/wind-icon-cropped.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
@@ -29,7 +28,7 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/wind.png"
+      "favicon": "./assets/images/wind-icon-cropped.png"
     },
     "plugins": [
       "expo-router"
