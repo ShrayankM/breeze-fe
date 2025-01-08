@@ -24,6 +24,15 @@
       "env": {
         "ENVFILE": ".env.production"
       }
+    },
+    "localapp": {
+      "env": {
+        "ANDROID_HOME": "/home/shrayank/Android",
+        "ENVFILE": ".env.production"
+      },
+      "android": {
+        "buildType": "apk"
+      }
     }
   }
 }
