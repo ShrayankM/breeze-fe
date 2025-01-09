@@ -26,6 +26,8 @@ type Book = {
   language: string;
   globalRating: number;
   userRating: number;
+  isAddedToLibrary: boolean;
+  isAddedToWishlist: boolean;
 };
 
 const BookDetails = () => {
@@ -34,11 +36,26 @@ const BookDetails = () => {
   const [data, setData] = useState<Book | null>(null);
   const [isExpanded, setIsExpanded] = useState(false); 
   const bookDetails = useLocalSearchParams();
+  // const isAddedToLibrary = bookDetails.isAddedToLibrary === 'true';
+  // const isAddedToWishlist = bookDetails.isAddedToWishlist === 'true';
+  // console.log("InLibrary" + isAddedToLibrary);
+  // console.log("Wishlisted" + isAddedToWishlist);
 
   const getBookUsingCode = async () => {
     const { baseUrl } = getEnvironment();
     try {
-      const response = await fetch(`${baseUrl}/v1/breeze/book/${bookDetails.code}/get-book-details`);
+      // const response = await fetch(`${baseUrl}/v1/breeze/book/${bookDetails.code}/get-book-details`);
+      const response = await fetch(`${baseUrl}/v1/breeze/book/get-book-details`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userCode: user.userCode,
+          bookCode: bookDetails.code
+        }),
+      });
       const jsonData = await response.json();
       setData(jsonData.data || null);
     } catch (error) {
@@ -182,7 +199,7 @@ const BookDetails = () => {
         {/** Button section */}
         <View style={styles.horizontalRowButtons}>
           {/* Add Button */}
-          <CustomButton
+          {/* <CustomButton
             title="Add to Library"
             handlePress={handlePostRequest}
             containerStyles={styles.buttonContainer}
@@ -196,7 +213,36 @@ const BookDetails = () => {
             containerStyles={styles.buttonContainer}
             textStyles={styles.buttonText}
             color="#45a100" // Optional: Override default color
-          />
+          /> */}
+
+            <CustomButton
+                title="Add to Library"
+                handlePress={data.isAddedToLibrary ? () => {} : handlePostRequest} 
+                containerStyles={[
+                    styles.buttonContainer,
+                    data.isAddedToLibrary ? styles.disabledButtonContainer : styles.buttonContainer,
+                ]}
+                textStyles={[
+                    styles.buttonText,
+                    data.isAddedToLibrary ? styles.disabledButtonText : styles.buttonText,
+                ]}
+                color={data.isAddedToLibrary ? '#d3d3d3' : '#0571b1'} 
+            />
+
+            <CustomButton
+                title="Add to Wishlist"
+                handlePress={data.isAddedToWishlist ? () => {} : addBookToWishList}
+                containerStyles={[
+                    styles.buttonContainer,
+                    data.isAddedToWishlist ? styles.disabledButtonContainer : styles.buttonContainer,
+                ]}
+                textStyles={[
+                    styles.buttonText,
+                    data.isAddedToWishlist ? styles.disabledButtonText : styles.buttonText,
+                ]}
+                color={data.isAddedToWishlist ? '#d3d3d3' : '#45a100'} 
+            />
+
         </View>
 
         <View style={styles.horizontalLine} />
@@ -232,6 +278,8 @@ const BookDetails = () => {
 export default BookDetails;
 
 const styles = StyleSheet.create({
+  disabledButtonContainer: { backgroundColor: '#d3d3d3' },
+  disabledButtonText: { color: '#a9a9a9' },
   scrollArea: {
     backgroundColor: "#ffffff"
   },
