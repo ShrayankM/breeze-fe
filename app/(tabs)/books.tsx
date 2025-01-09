@@ -20,6 +20,8 @@ type Book = {
   author: string;
   category: string;
   thumbnail: string;
+  // isAddedToLibrary: boolean;
+  // isAddedToWishlist: boolean;
 };
 
 const Books = () => {
@@ -107,7 +109,13 @@ const Books = () => {
   }, [debouncedQuery]);
 
   const handlePress = (bookDetails: Book) => {
-    router.push({ pathname: '/(pages)/bookDetailsGlobal', params: bookDetails });
+    router.push({ pathname: '/(pages)/bookDetailsGlobal', 
+      params: {
+        ...bookDetails,
+        // isAddedToLibrary: bookDetails.isAddedToLibrary ? 'true' : 'false',
+        // isAddedToWishlist: bookDetails.isAddedToWishlist ? 'true' : 'false',
+      }
+     });
   };
 
   return (
