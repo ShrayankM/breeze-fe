@@ -42,29 +42,13 @@ A React Native-based Book Tracking Application that helps users manage and keep 
 ## 📸 Screenshots
 
 ### 🏠 Global Library
-![Home Screen](./assets/home.png)
+<img src="./assets/screenshots/global-page.png" alt="Home Screen" width="300"/>
 
 ### 💖 Wishlist
-![Wishlist Screen](./assets/wishlist.png)
+<img src="./assets/screenshots/user-wishlist-page.png" alt="Wishlist Screen" width="300"/>
 
 ### 📖 Currently Reading
-![Currently Reading](./assets/reading.png)
+<img src="./assets/screenshots/user-details-page.png" alt="Currently Reading" width="300"/>
 
-### ✅ Finished Books
-![Read Books](./assets/finished.png)
-
-> *(Add screenshots of your app here)*  
-> Example:
-> - ![Global Book Library](./assets/screenshots/global-page.png)
-> - ![Personal Library](./assets/screenshots/user-library-page.png)
-> - ![Wishlist](./assets/screenshots/user-wishlist-page.png)
-> - ![Currently Reading](./assets/screenshots/user-details-page.png)
-> - ![Profile Page](./assets/screenshots/user-profile-page.png)
-
-## 📦 Installation
-
-```bash
-git clone https://github.com/your-username/book-tracker-app.git
-cd book-tracker-app
-npm install
-npx expo start
+### ✅ Personal Library
+<img src="./assets/screenshots/user-library-page.png" alt="Read Books" width="300"/>
