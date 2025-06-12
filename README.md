@@ -46,6 +46,7 @@ You can try the app by downloading the latest APK directly:
 > - 🌱 [**Render**](https://render.com/) – For deploying the Spring Boot backend application  
 > - 🐬 [**Aiven Console**](https://console.aiven.io/) – For hosting the MySQL database (with free trial credits)  
 > - 📱 [**Expo**](https://expo.dev/) – For building and running the React Native Android application
+> - [**Backend Repository**](https://github.com/ShrayankM/breeze) - SpringBoot Repository for Backend Application
 
 ## 📸 Screenshots
 
