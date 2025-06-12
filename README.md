@@ -2,6 +2,13 @@
 
 A React Native-based Book Tracking Application that helps users manage and keep track of their personal reading journey. Users can explore a global library of books, build their own personal library, wishlist titles for later, and monitor what they are currently reading or have finished.
 
+📱 **Download the Android App**  
+You can try the app by downloading the latest APK directly:
+
+➡️ [**Download APK**](./assets/apk/breeze-application-v1.5.apk) *(Click to download and install on your Android device)*
+
+> 💡 Make sure to allow installation from unknown sources on your device.
+
 ## 🚀 Features
 
 - 🌍 **Global Library View**  
@@ -34,10 +41,11 @@ A React Native-based Book Tracking Application that helps users manage and keep 
 - **API Integration:** Open Library API / Google Books API (customizable)
 - **Authentication:** Appwrite
 
-## Free Services for Production
-> **Render** (For SpringBoot Application deployment)
-> **Aiven Console** (For MySql Database)
-> **Expo** (For React Native Android application)
+## 🌐 Free Services for Production
+
+> - 🌱 [**Render**](https://render.com/) – For deploying the Spring Boot backend application  
+> - 🐬 [**Aiven Console**](https://console.aiven.io/) – For hosting the MySQL database (with free trial credits)  
+> - 📱 [**Expo**](https://expo.dev/) – For building and running the React Native Android application
 
 ## 📸 Screenshots
 
