@@ -1,50 +1,58 @@
-# Welcome to your Expo app 👋
+# 📚 Book Tracker App (Breeze)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native-based Book Tracking Application that helps users manage and keep track of their personal reading journey. Users can explore a global library of books, build their own personal library, wishlist titles for later, and monitor what they are currently reading or have finished.
 
-## Get started
+## 🚀 Features
 
-1. Install dependencies
+- 🌍 **Global Library View**  
+  Browse a vast collection of books available to all users.
 
-   ```bash
-   npm install
-   ```
+- ➕ **Add to Personal Library**  
+  Add books from the global view to your own library for easier tracking.
 
-2. Start the app
+- 💖 **Wishlist**  
+  Mark books you're interested in but haven't started yet.
 
-   ```bash
-    npx expo start
-   ```
+- 📖 **Currently Reading**  
+  Keep track of books you're actively reading.
 
-In the output, you'll find options to open the app in a
+- ✅ **Read Books**  
+  Maintain a history of books you've completed.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- 🔍 **Search and Filter**  
+  Easily find books by title, author, or category.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- 📱 **Mobile-Friendly UI**  
+  Clean, responsive design built with React Native.
 
-## Get a fresh project
+## 🛠️ Tech Stack
 
-When you're ready, run:
+- **Frontend:** React Native (with Tailwind CSS)
+- **Navigation:** React Navigation
+- **State Management:** Context API / Redux (optional)
+- **Backend (Optional):** SpringBoot Framework, MySQL (Database)
+- **API Integration:** Open Library API / Google Books API (customizable)
+- **Authentication:** Appwrite
+
+## Services
+> Render (For SpringBoot Application deployment)
+> Aiven Console (For MySql Database)
+> Expo (For React Native Android application)
+
+## 📸 Screenshots
+
+> *(Add screenshots of your app here)*  
+> Example:
+> - Global Book Library
+> - Personal Library
+> - Wishlist
+> - Currently Reading
+> - Finished Books
+
+## 📦 Installation
 
 ```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+git clone https://github.com/your-username/book-tracker-app.git
+cd book-tracker-app
+npm install
+npx expo start
