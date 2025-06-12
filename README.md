@@ -30,9 +30,14 @@ A React Native-based Book Tracking Application that helps users manage and keep 
 - **Frontend:** React Native (with Tailwind CSS)
 - **Navigation:** React Navigation
 - **State Management:** Context API / Redux (optional)
-- **Backend (Optional):** Firebase / Node.js + Express + MongoDB (can be configured as needed)
+- **Backend (Optional):** SpringBoot Framework, MySQL (Database)
 - **API Integration:** Open Library API / Google Books API (customizable)
-- **Authentication:** Firebase Auth / custom implementation
+- **Authentication:** Appwrite
+
+## Services
+> Render (For SpringBoot Application deployment)
+> Aiven Console (For MySql Database)
+> Expo (For React Native Android application)
 
 ## 📸 Screenshots
 
