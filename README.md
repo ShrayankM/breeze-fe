@@ -34,20 +34,32 @@ A React Native-based Book Tracking Application that helps users manage and keep 
 - **API Integration:** Open Library API / Google Books API (customizable)
 - **Authentication:** Appwrite
 
-## Services
-> Render (For SpringBoot Application deployment)
-> Aiven Console (For MySql Database)
-> Expo (For React Native Android application)
+## Free Services for Production
+> **Render** (For SpringBoot Application deployment)
+> **Aiven Console** (For MySql Database)
+> **Expo** (For React Native Android application)
 
 ## 📸 Screenshots
 
+### 🏠 Global Library
+![Home Screen](./assets/home.png)
+
+### 💖 Wishlist
+![Wishlist Screen](./assets/wishlist.png)
+
+### 📖 Currently Reading
+![Currently Reading](./assets/reading.png)
+
+### ✅ Finished Books
+![Read Books](./assets/finished.png)
+
 > *(Add screenshots of your app here)*  
 > Example:
-> - Global Book Library
-> - Personal Library
-> - Wishlist
-> - Currently Reading
-> - Finished Books
+> - ![Global Book Library](./assets/screenshots/global-page.png)
+> - ![Personal Library](./assets/screenshots/user-library-page.png)
+> - ![Wishlist](./assets/screenshots/user-wishlist-page.png)
+> - ![Currently Reading](./assets/screenshots/user-details-page.png)
+> - ![Profile Page](./assets/screenshots/user-profile-page.png)
 
 ## 📦 Installation
 
